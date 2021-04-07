@@ -1,0 +1,44 @@
+package com.kill.consumer.controller;
+
+import com.kill.consumer.service.impl.StockOrderServiceImpl;
+import com.kill.consumer.util.jsonUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.math.BigDecimal;
+import java.util.Map;
+
+
+@RestController
+@RequestMapping("/order")
+public class OrderController {
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+
+    @Autowired
+    private StockOrderServiceImpl stockOrderService;
+
+    /**
+     *
+     * @param map 包含stockId
+     * @return id
+     */
+    @PostMapping(value = "", produces = {"application/json;charset=UTF-8"})
+    public String createOrder(@RequestBody Map<String, Object> map) {
+        int id = 0;
+        try {
+            stockOrderService.createOrderUseRedis(Integer.parseInt(String.valueOf(map.get("addSale"))),
+                    Integer.parseInt(String.valueOf(map.get("stockId"))), Integer.parseInt(String.valueOf(map.get("userId"))),
+                    BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.get("price")))));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return jsonUtil.getJSONString(id);
+    }
+
+}

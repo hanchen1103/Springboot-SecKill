@@ -1,0 +1,79 @@
+dubbo:
+  application:
+    name:  dubbo-consumer
+  registry:
+    address: 139.196.175.139:2181
+    protocol: zookeeper
+    check: false
+  monitor:
+    protocol: register
+  consumer:
+    check:  false
+    timeout: 3000
+  protocol:
+    port: 20881
+
+server:
+  port: 6667
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+      enabled: true
+  main:
+    allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
+
+
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://139.196.175.139/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+
+  jackson:
+    default-property-inclusion: ALWAYS
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 20000
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1ms
+        min-idle: 8
+    password:
+
+mybatis:
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.dubbo.consumer.model
+
+#showSql
+logging:
+  level:
+    com:
+      dubbo:
+        consumer:
+          mapper : debug
+
+redis:
+  limit: 5
+
+
+consumer:
+  broker:
+    list: 139.196.175.139:9092
+  group:
+    id: dubbo
+  topic: ORDER-TOPIC
+  thread: 3
+
+my:
+  url: 127.0.0.1
+  port: 6667
