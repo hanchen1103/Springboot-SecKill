@@ -5,10 +5,7 @@ import com.kill.consumer.util.jsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -39,6 +36,18 @@ public class OrderController {
             logger.error(e.getMessage());
         }
         return jsonUtil.getJSONString(id);
+    }
+
+    @GetMapping(value = "/kafka/{stockId}", produces = {"application/json;charset=UTF-8"})
+    public String createKafka(@PathVariable int stockId) {
+        logger.info("sid=[{}]", stockId);
+        int id = 0;
+        try {
+            stockOrderService.createOrderUseRedisAndKafka(stockId);
+        } catch (Exception e) {
+            logger.error("exception", e);
+        }
+        return String.valueOf(id);
     }
 
 }

@@ -42,4 +42,5 @@ public class StockServiceImpl implements StockService {
         return stock.getId();
     }
 
+
 }

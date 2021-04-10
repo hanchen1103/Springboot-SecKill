@@ -38,4 +38,6 @@ public interface StockService {
      * @return id
      */
     int addStock(Stock stock);
+
+    //int updateStockByOptimisticAndKafka(int stockId);
 }

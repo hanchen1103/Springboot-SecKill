@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 public class ConsumerGroup {
+
     private static Logger LOGGER = LoggerFactory.getLogger(ConsumerGroup.class);
     /**
      * 线程池
@@ -26,8 +27,7 @@ public class ConsumerGroup {
                 0L, TimeUnit.MILLISECONDS,
                 new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
-
-        consumers = new ArrayList<ConsumerTask>(threadNum);
+        consumers = new ArrayList<>(threadNum);
         for (int i = 0; i < threadNum; i++) {
             ConsumerTask consumerThread = new ConsumerTask(brokerList, groupId, topic);
             consumers.add(consumerThread);

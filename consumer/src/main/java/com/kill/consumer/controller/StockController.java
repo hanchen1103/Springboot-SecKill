@@ -66,8 +66,8 @@ public class StockController {
                 MultipartFile t = ((MultipartHttpServletRequest) request).getFiles("file" + i).get(0);
                 files.add(t);
             }
-            String filePath = "D://linux//";
-            //String filePath = "/usr/img/";
+            //String filePath = "D://linux//";
+            String filePath = "/usr/img/";
             for (int i = 0; i < files.size(); i++) {
                 MultipartFile file = files.get(i);
                 if (file.isEmpty()) {

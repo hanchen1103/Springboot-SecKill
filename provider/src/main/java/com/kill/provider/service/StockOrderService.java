@@ -7,4 +7,7 @@ public interface StockOrderService {
      * @throws Exception 异常
      */
     void createOrderUseRedis(int stockId) throws Exception;
+
+    void createOrderUseRedisAndKafka(int stockId) throws Exception;
+
 }

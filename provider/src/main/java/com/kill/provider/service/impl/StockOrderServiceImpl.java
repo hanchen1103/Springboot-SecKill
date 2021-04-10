@@ -7,6 +7,8 @@ import com.kill.api.service.StockService;
 import com.kill.provider.mapper.StockDAO;
 import com.kill.provider.mapper.StockOrderDAO;
 import com.kill.provider.util.RedisKeyUtil;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +41,6 @@ public class StockOrderServiceImpl implements OrderService {
     @Autowired
     StockDAO stockDAO;
 
-//    @Autowired
-//    KafkaProducer kafkaProducer;
-
-    @Value("${spring.kafka.topic}")
-    String kafkaTopic;
-
-    public void redisTest() {
-        redis.opsForValue().set("test", "notNull");
-        System.out.println(redis.opsForValue().get("test"));
-    }
 
 
     private int createOrder(Stock stock, int userId, BigDecimal price){

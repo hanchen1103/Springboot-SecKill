@@ -1,14 +1,19 @@
 package com.kill.consumer.kafka;
 
+import com.alibaba.fastjson.JSON;
+import com.kill.api.model.Stock;
 import com.kill.consumer.service.StockOrderService;
 import com.kill.consumer.util.SpringBeanFactory;
 import com.google.gson.Gson;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.concurrent.RejectedExecutionException;
 
 public class ConsumerTask implements Runnable {
     private static Logger LOGGER = LoggerFactory.getLogger(ConsumerTask.class);
@@ -47,19 +52,19 @@ public class ConsumerTask implements Runnable {
 
     @Override
     public void run() {
-//        boolean flag = true;
-//        while (flag) {
-//            // 使用200ms作为获取超时时间
-//            ConsumerRecords<String, String> records = consumer.poll(200);
-//
-//            for (ConsumerRecord<String, String> record : records) {
-//                // 简单地打印消息
-//                LOGGER.info("==="+record.value() + " consumed " + record.partition() +
-//                        " message with offset: " + record.offset());
-//
-//                dealMessage(record.value()) ;
-//            }
-//        }
+        boolean flag = true;
+        while (flag) {
+            // 使用200ms作为获取超时时间
+            ConsumerRecords<String, String> records = consumer.poll(200);
+
+            for (ConsumerRecord<String, String> record : records) {
+                // 简单地打印消息
+                LOGGER.info("==="+record.value() + " consumed " + record.partition() +
+                        " message with offset: " + record.offset());
+
+                dealMessage(record.value()) ;
+            }
+        }
 
 
     }
@@ -67,22 +72,22 @@ public class ConsumerTask implements Runnable {
     /**
      * @param value
      */
-//    private void dealMessage(String value) {
-//        try {
-//
-//            Stock stock = gson.fromJson(value, Stock.class);
-//            LOGGER.info("consumer stock={}", JSON.toJSONString(stock));
-//
-//            //创建订单
-//            orderService.createOrderUseRedis(stock.getId());
-//
-//        }catch (RejectedExecutionException e){
-//            LOGGER.error("rejected message = " + value);
-//        }catch (Exception e){
-//            LOGGER.error("unknown exception",e);
-//        }
-//
-//    }
+    private void dealMessage(String value) {
+        try {
+
+            Stock stock = gson.fromJson(value, Stock.class);
+            LOGGER.info("consumer stock={}", JSON.toJSONString(stock));
+
+            //创建订单
+            orderService.createOrderUseRedisAndKafka(stock.getId());
+
+        }catch (RejectedExecutionException e){
+            LOGGER.error("rejected message = " + value);
+        }catch (Exception e){
+            LOGGER.error("unknown exception",e);
+        }
+
+    }
 
 
 }

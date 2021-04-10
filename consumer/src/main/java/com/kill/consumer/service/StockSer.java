@@ -39,4 +39,5 @@ public interface StockSer {
      * @return id
      */
     int addStock(Stock stock);
+
 }
