@@ -14,13 +14,13 @@ public class StockOrderServiceImpl implements StockOrderService {
     private OrderService orderService;
 
     @Override
-    public void createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
-        orderService.createOrderUseRedis(addSale, stockId, userId, price);
+    public int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+        return orderService.createOrderUseRedis(addSale, stockId, userId, price);
     }
 
     @Override
-    public void createOrderUseRedisAndKafka(int stockId) throws Exception {
-        orderService.createOrderUseRedisAndKafka(stockId);
+    public void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+        orderService.createOrderUseRedisAndKafka(addSale, stockId, userId, price);
     }
 
 

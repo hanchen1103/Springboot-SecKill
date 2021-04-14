@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -102,6 +103,7 @@ public class StockController {
         stock.setUserId(Integer.parseInt(request.getParameter("userId")));
         stock.setName(request.getParameter("name"));
         stock.setTag(request.getParameter("tag"));
+        stock.setPrice(new BigDecimal(request.getParameter("price")));
         return jsonUtil.getJSONString(0, stockService.addStock(stock));
     }
 }

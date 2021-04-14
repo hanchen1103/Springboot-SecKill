@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface StockDAO {
     String TABLE_NAME = " stock ";
-    String INSERT_NAME = " name, createDate, userId, tag, descri, pic, status, version, sale, count";
+    String INSERT_NAME = " name, createDate, userId, tag, descri, pic, status, version, sale, count, price";
     String SELECT_NAME = " id, " + INSERT_NAME;
 
     /**
@@ -27,7 +27,7 @@ public interface StockDAO {
      * @param stock 商品
      * @return stock.id
      */
-    @Insert({"insert into ", TABLE_NAME, " ( ", INSERT_NAME, " ) values (#{name},#{createDate},#{userId},#{tag},#{descri},#{pic},#{status},#{version},#{sale},#{count})"})
+    @Insert({"insert into ", TABLE_NAME, " ( ", INSERT_NAME, " ) values (#{name},#{createDate},#{userId},#{tag},#{descri},#{pic},#{status},#{version},#{sale},#{count},#{price})"})
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     Integer addStock(Stock stock);
 

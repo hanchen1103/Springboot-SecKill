@@ -9,8 +9,8 @@ public interface StockOrderService {
      * @param stockId 库存id
      * @throws Exception 异常
      */
-    void createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
+    int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
 
-    void createOrderUseRedisAndKafka(int stockId) throws Exception;
+    void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
 
 }

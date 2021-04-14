@@ -29,9 +29,10 @@ public class OrderController {
     public String createOrder(@RequestBody Map<String, Object> map) {
         int id = 0;
         try {
-            stockOrderService.createOrderUseRedis(Integer.parseInt(String.valueOf(map.get("addSale"))),
+            int res = stockOrderService.createOrderUseRedis(Integer.parseInt(String.valueOf(map.get("addSale"))),
                     Integer.parseInt(String.valueOf(map.get("stockId"))), Integer.parseInt(String.valueOf(map.get("userId"))),
                     BigDecimal.valueOf(Double.parseDouble(String.valueOf(map.get("price")))));
+            if(res == -1) return jsonUtil.getJSONString(1, "创建订单失败");
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -39,11 +40,11 @@ public class OrderController {
     }
 
     @GetMapping(value = "/kafka/{stockId}", produces = {"application/json;charset=UTF-8"})
-    public String createKafka(@PathVariable int stockId) {
+    public String createKafka(@PathVariable int stockId, int addSale, BigDecimal price, int userId) {
         logger.info("sid=[{}]", stockId);
         int id = 0;
         try {
-            stockOrderService.createOrderUseRedisAndKafka(stockId);
+            stockOrderService.createOrderUseRedisAndKafka(addSale, stockId, userId, price);
         } catch (Exception e) {
             logger.error("exception", e);
         }

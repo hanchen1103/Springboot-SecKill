@@ -4,15 +4,13 @@ import com.kill.api.model.Stock;
 import com.kill.api.model.StockOrder;
 import com.kill.api.service.OrderService;
 import com.kill.api.service.StockService;
+import com.kill.provider.config.KafkaProducer;
 import com.kill.provider.mapper.StockDAO;
 import com.kill.provider.mapper.StockOrderDAO;
 import com.kill.provider.util.RedisKeyUtil;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 @Transactional(rollbackFor = Exception.class)
@@ -41,7 +41,8 @@ public class StockOrderServiceImpl implements OrderService {
     @Autowired
     StockDAO stockDAO;
 
-
+    @Autowired
+    KafkaProducer kafkaProducer;
 
     private int createOrder(Stock stock, int userId, BigDecimal price){
         StockOrder stockOrder = new StockOrder();
@@ -58,16 +59,25 @@ public class StockOrderServiceImpl implements OrderService {
      * 乐观锁更新数据库和redis
      * @param stock 库存信息
      */
-    private void saleStockByOptimistic(int addSale, Stock stock) {
+    public Map<Integer, String> saleStockByOptimistic(int addSale, Stock stock) {
+        Map<Integer, String> map = new HashMap<>();
+        if(addSale + stock.getSale() > stock.getCount()) {
+            map.put(999, "库存不足");
+            return map;
+            //throw new RuntimeException("库存不足");
+        }
         int flag = stockService.updateStockByOptimisticLock(addSale, stock);
         if(flag == 0) {
-            throw new RuntimeException("更新库存失败");
+            map.put(999, "更新库存失败");
+            //throw new RuntimeException("更新库存失败");
+            return map;
         }
-        redis.opsForValue().increment(RedisKeyUtil.STOCK_SALE + stock.getId(), 1);
+        redis.opsForValue().increment(RedisKeyUtil.STOCK_SALE + stock.getId(), addSale);
         redis.opsForValue().increment(RedisKeyUtil.STOCK_VERSION + stock.getId(), 1);
+        return null;
     }
 
-    private Stock checkStockByRedis(int sid) throws Exception {
+    private Stock checkStockByRedis(int sid) {
         if(redis.opsForValue().get(RedisKeyUtil.STOCK_COUNT + sid) == null ||
                 redis.opsForValue().get(RedisKeyUtil.STOCK_SALE + sid) == null
         || redis.opsForValue().get(RedisKeyUtil.STOCK_VERSION + sid) == null) {
@@ -93,15 +103,19 @@ public class StockOrderServiceImpl implements OrderService {
     @Override
     public int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
         Stock stock = checkStockByRedis(stockId);
-        saleStockByOptimistic(addSale, stock);
+        Map<Integer, String> map = saleStockByOptimistic(addSale, stock);
+        if (map != null) return -1;
         return createOrder(stock, userId, price);
     }
 
     @Override
-    public void createOrderUseRedisAndKafka(int stockId) throws Exception {
-//        Stock stock = checkStockByRedis(stockId);
-//        kafkaProducer.send(new ProducerRecord(kafkaTopic, stock));
-//        logger.info("send kafka success");
+    public void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+        Stock stock = checkStockByRedis(stockId);
+        stock.setPrice(price);
+        stock.setUserId(userId);
+        stock.setSale(addSale);
+        kafkaProducer.sendOrderTopic(stock);
+        logger.info("send kafka success");
     }
 
 }

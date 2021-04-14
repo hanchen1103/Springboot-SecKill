@@ -8,6 +8,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class StockOrder implements Serializable {
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
     private int id;
     private int stockId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -15,6 +23,7 @@ public class StockOrder implements Serializable {
     private Date createDate;
     private int userId;
     private BigDecimal price;
+    private int count;
 
     public int getUserId() {
         return userId;

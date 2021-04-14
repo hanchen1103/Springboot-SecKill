@@ -25,7 +25,7 @@ public class ConsumerGroup {
 
         threadPool = new ThreadPoolExecutor(threadNum, threadNum,
                 0L, TimeUnit.MILLISECONDS,
-                new LinkedBlockingQueue<Runnable>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+                new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
 
         consumers = new ArrayList<>(threadNum);
         for (int i = 0; i < threadNum; i++) {

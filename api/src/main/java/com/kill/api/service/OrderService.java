@@ -17,7 +17,7 @@ public interface OrderService {
      * @param stockId 商品id
      * @throws Exception kafka错误，redis异常
      */
-    void createOrderUseRedisAndKafka(int stockId) throws Exception;
+    void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
 
 
 }

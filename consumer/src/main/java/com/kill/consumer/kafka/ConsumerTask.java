@@ -79,7 +79,7 @@ public class ConsumerTask implements Runnable {
             LOGGER.info("consumer stock={}", JSON.toJSONString(stock));
 
             //创建订单
-            orderService.createOrderUseRedisAndKafka(stock.getId());
+            //orderService.createOrderUseRedisAndKafka(stock.getId());
 
         }catch (RejectedExecutionException e){
             LOGGER.error("rejected message = " + value);

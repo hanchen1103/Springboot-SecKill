@@ -4,12 +4,16 @@ import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * 商品库存
  */
 public class Stock implements Serializable {
+
+    private static final long serialVersionUID = -8437012513227627973L;
+
     private int id;
     private String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -21,8 +25,18 @@ public class Stock implements Serializable {
     private int sale; //已售
     private int version; //乐观锁
     private String descri;
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     private String pic;
     private int status;
+    private BigDecimal price;
 
     public int getId() {
         return id;
@@ -102,6 +116,23 @@ public class Stock implements Serializable {
 
     public void setPic(String pic) {
         this.pic = pic;
+    }
+
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", createDate=" + createDate +
+                ", userId=" + userId +
+                ", tag='" + tag + '\'' +
+                ", count=" + count +
+                ", sale=" + sale +
+                ", version=" + version +
+                ", descri='" + descri + '\'' +
+                ", pic='" + pic + '\'' +
+                ", status=" + status +
+                '}';
     }
 
     public int getStatus() {
