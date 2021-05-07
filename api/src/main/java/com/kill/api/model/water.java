@@ -8,17 +8,17 @@ import java.util.Date;
 
 public class water implements Serializable {
 
-    private int id;
+    public int id;
 
-    private double electric_frequenct;
+    public double electric_frequenct;
 
-    private double accuracy;
+    public double accuracy;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
+    public Date createDate;
 
-    private double flow;
+    public double flow;
 
     public int getId() {
         return id;
@@ -68,7 +68,7 @@ public class water implements Serializable {
         this.userId = userId;
     }
 
-    private int userId;
+    public int userId;
 
 
 

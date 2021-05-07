@@ -12,19 +12,19 @@ import java.util.Date;
  */
 public class Stock implements Serializable {
 
-    private static final long serialVersionUID = -8437012513227627973L;
+    public static final long serialVersionUID = -8437012513227627973L;
 
-    private int id;
-    private String name;
+    public int id;
+    public String name;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
-    private int userId;
-    private String tag;
-    private int count; //库存
-    private int sale; //已售
-    private int version; //乐观锁
-    private String descri;
+    public Date createDate;
+    public int userId;
+    public String tag;
+    public int count; //库存
+    public int sale; //已售
+    public int version; //乐观锁
+    public String descri;
 
     public BigDecimal getPrice() {
         return price;
@@ -34,9 +34,9 @@ public class Stock implements Serializable {
         this.price = price;
     }
 
-    private String pic;
-    private int status;
-    private BigDecimal price;
+    public String pic;
+    public int status;
+    public BigDecimal price;
 
     public int getId() {
         return id;

@@ -8,19 +8,19 @@ import java.util.Date;
 
 public class power implements Serializable {
 
-    private int id;
+    public int id;
 
-    private double voltage;
+    public double voltage;
 
-    private double electric_current;
+    public double electric_current;
 
-    private double temperature;
+    public double temperature;
 
-    private double humidity;
+    public double humidity;
 
-    private double flow;
+    public double flow;
 
-    private int userId;
+    public int userId;
 
     public Date getCreateDate() {
         return createDate;
@@ -32,7 +32,7 @@ public class power implements Serializable {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
+    public Date createDate;
 
     public int getId() {
         return id;

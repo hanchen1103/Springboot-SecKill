@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 public class ShopCar implements Serializable {
 
-    private int id;
-    private String size;
-    private int stockId;
-    private int userId;
+    public int id;
+    public String size;
+    public int stockId;
+    public int userId;
 
     public int getId() {
         return id;

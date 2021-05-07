@@ -3,11 +3,11 @@ package com.kill.api.model;
 import java.io.Serializable;
 
 public class spiderProduct implements Serializable {
-    private int id;
-    private String band;
-    private String info;
-    private String url;
-    private String price;
+    public int id;
+    public String band;
+    public String info;
+    public String url;
+    public String price;
 
     public int getId() {
         return id;
@@ -65,7 +65,7 @@ public class spiderProduct implements Serializable {
         this.name = name;
     }
 
-    private String pic;
-    private String name;
+    public String pic;
+    public String name;
 
 }

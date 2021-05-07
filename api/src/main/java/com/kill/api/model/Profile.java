@@ -7,13 +7,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Profile implements Serializable {
-    private int id;
-    private String bio;
-    private String sex;
-    private String nickName;
-    private String head_url;
-    private String name;
-    private int status;
+    public int id;
+    public String bio;
+    public String sex;
+    public String nickName;
+    public String head_url;
+    public String name;
+    public int status;
 
     public Date getCreateDate() {
         return createDate;

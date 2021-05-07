@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class LoginTicket implements Serializable {
-    private int id;
-    private int userId;
-    private Date expired; //有限日期
-    private int status;
-    private String ticket;
+    public int id;
+    public int userId;
+    public Date expired; //有限日期
+    public int status;
+    public String ticket;
 
 
     public int getUserId() {

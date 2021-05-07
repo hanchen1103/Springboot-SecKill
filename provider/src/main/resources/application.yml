@@ -2,12 +2,12 @@ dubbo:
   application:
     name: dubbo-provider
   registry:
-    address: 139.196.175.139:2181
+    address: 120.78.188.52:2181
     protocol: zookeeper
     check: false
   protocol:
     name: dubbo
-    port: 30006
+    port: 30005
   monitor:
     protocol: register
   consumer:
@@ -25,7 +25,7 @@ spring:
     username: root
     password: 123456
     url: jdbc:mysql://139.196.175.139/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 
   jackson:
@@ -44,7 +44,7 @@ spring:
         max-wait: -1ms
         min-idle: 8
   kafka:
-    bootstrap-servers: 139.196.175.139:9092
+    bootstrap-servers: 120.78.188.52:9092
     producer:
       # 发生错误后，消息重发的次数。
       retries: 0

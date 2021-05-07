@@ -7,21 +7,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Gas implements Serializable {
-    private int id;
+    public int id;
 
-    private double flow;
+    public double flow;
 
-    private double temperature;
+    public double temperature;
 
-    private double humidity;
+    public double humidity;
 
-    private double accuracy;
+    public double accuracy;
 
-    private int userId;
+    public int userId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
+    public Date createDate;
 
     public Date getCreateDate() {
         return createDate;

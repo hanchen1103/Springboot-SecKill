@@ -16,14 +16,14 @@ public class StockOrder implements Serializable {
         this.count = count;
     }
 
-    private int id;
-    private int stockId;
+    public int id;
+    public int stockId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JSONField(format = "yyyy-MM-dd HH:mm:ss")
-    private Date createDate;
-    private int userId;
-    private BigDecimal price;
-    private int count;
+    public Date createDate;
+    public int userId;
+    public BigDecimal price;
+    public int count;
 
     public int getUserId() {
         return userId;
@@ -49,7 +49,7 @@ public class StockOrder implements Serializable {
         this.order_uuid = order_uuid;
     }
 
-    private String order_uuid;
+    public String order_uuid;
 
     public int getId() {
         return id;

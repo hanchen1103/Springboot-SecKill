@@ -3,10 +3,10 @@ package com.kill.api.model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    private int id;
-    private String name;
-    private String password;
-    private String salt;
+    public int id;
+    public String name;
+    public String password;
+    public String salt;
 
     public int getLevel() {
         return level;
@@ -16,9 +16,9 @@ public class User implements Serializable {
         this.level = level;
     }
 
-    private String head_url;
-    private int level;
-    private int status;
+    public String head_url;
+    public int level;
+    public int status;
 
     public int getStatus() {
         return status;
