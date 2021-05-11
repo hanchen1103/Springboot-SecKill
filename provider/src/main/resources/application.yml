@@ -21,6 +21,10 @@ spring:
       max-request-size: 5000MB
       enabled: true
 
+  elasticsearch:
+    rest:
+      uris: 120.78.188.52:9200
+
   datasource:
     username: root
     password: 123456
