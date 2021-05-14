@@ -45,7 +45,7 @@ public class CommentController {
         return jsonUtil.getJSONString(0);
     }
 
-    @GetMapping(value = "/entityType={entityType}/entityId={entityId}")
+    @GetMapping(value = "/entityType={entityType}/entityId={entityId}", produces = {"application/json;charset=UTF-8"})
     public String getComment(@PathVariable int entityType, @PathVariable int entityId) {
         List<Comment> commentList = commentService.getCommentByEntity(entityId, entityType);
         List<Map<String, Object>> list = new ArrayList<>();
@@ -63,6 +63,7 @@ public class CommentController {
     @GetMapping(value = "/{commentId}",produces = {"application/json;charset=UTF-8"})
     public String getCommentEntity(@PathVariable int commentId) {
         Comment comment = commentService.getCommentById(commentId);
+        if(comment == null) return jsonUtil.getJSONString(999, "comment is null");
         Map<String, Object> map = new HashMap<>();
         Profile profile = profileService.selectByUserId(comment.getUserId());
         map.put("comment", comment);

@@ -16,6 +16,7 @@ public interface CommentDAO {
 
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELDS,
             ") values (#{userId}, #{createDate}, #{entityId}, #{entityType}, #{status}, #{content})"})
+    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     int addcomment(Comment comment);
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, "where id=#{id}"})
