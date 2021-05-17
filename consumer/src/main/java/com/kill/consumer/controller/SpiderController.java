@@ -14,6 +14,11 @@ public class SpiderController {
     @Autowired
     ProductServiceImpl productService;
 
+    /**
+     * 调用python脚本做爬虫
+     * @param msg 爬虫关键词
+     * @return 爬取内容
+     */
     @GetMapping(value = "", produces = {"application/json;charset=UTF-8"})
     public String getProduct(String msg) {
         return jsonUtil.getJSONString(0, productService.getSpider(msg));

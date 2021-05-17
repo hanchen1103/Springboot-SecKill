@@ -39,6 +39,14 @@ public class OrderController {
         return jsonUtil.getJSONString(id);
     }
 
+    /**
+     * 使用kafka消息队列
+     * @param stockId 购买商品id
+     * @param addSale 购买数
+     * @param price 购买价格
+     * @param userId 购买者
+     * @return json,id
+     */
     @GetMapping(value = "/kafka/{stockId}", produces = {"application/json;charset=UTF-8"})
     public String createKafka(@PathVariable int stockId, int addSale, BigDecimal price, int userId) {
         logger.info("sid=[{}]", stockId);

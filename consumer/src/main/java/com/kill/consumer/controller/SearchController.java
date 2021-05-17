@@ -14,6 +14,12 @@ public class SearchController {
     @Autowired
     SearchServiceImpl searchService;
 
+    /**
+     * 搜索
+     * @param type 0 代表商品(name+tag+descri联合搜索) 1 代表用户(根据nickName)
+     * @param q 搜索词
+     * @return list<stock>或List<profile>
+     */
     @GetMapping(value = "", produces = "application/json;charset=UTF-8")
     public String searchstock(int type, String q) {
         if(type == 0) return jsonUtil.getJSONString(0, searchService.searchStock(q));

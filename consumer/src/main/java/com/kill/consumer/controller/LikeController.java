@@ -31,6 +31,11 @@ public class LikeController {
         return jsonUtil.getJSONString(0, likeServiceimpl.like(userId, entityType, entityId));
     }
 
+    /**
+     * 取消喜欢
+     * @param map entityType, 1:product, 2:user, 3:comment, 4:hotel, userId:自身id，entityId：对象id
+     * @return json
+     */
     @PostMapping(value = "/disLike", produces = {"application/json;charset=UTF-8"})
     public String uncollect(@RequestBody Map<String, String> map) {
         int entityId = Integer.parseInt(map.get("entityId"));

@@ -22,6 +22,11 @@ public class ShoppingCarController {
     @Autowired
     StockServiceImpl stockService;
 
+    /**
+     * 购物车功能
+     * @param map 添加购物车
+     * @return json code=0
+     */
     @PostMapping(value = "", produces = {"application/json;charset=UTF-8"})
     public String addShop(@RequestBody Map<String, String> map) {
         int userId = Integer.parseInt(map.get("userId"));
@@ -31,6 +36,13 @@ public class ShoppingCarController {
         return jsonUtil.getJSONString(0);
     }
 
+    /**
+     * 获取某人购物车
+     * @param userId 某人id
+     * @param start limit
+     * @param limit offset
+     * @return json包装的List<Map<String, Object>> 包含shopCar和stock
+     */
     @GetMapping(value = "/{userId}/start={start}/limit={limit}", produces = {"application/json;charset=UTF-8"})
     public String selectCar(@PathVariable("userId") int userId,
                             @PathVariable("start") int start,

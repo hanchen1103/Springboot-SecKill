@@ -186,12 +186,17 @@ public class MessageController {
         return jsonUtil.getJSONString(0, map);
     }
 
+    /**
+     * 投诉
+     * @param map stockId：投诉商品id，content:id+投诉内容 9999099代表系统（管理员）
+     * @return json code=0
+     */
     @PostMapping(value = "/complaint", produces = "application/json;charset=UTF-8")
     public String comp(@RequestBody Map<String, String> map) {
         int userId = Integer.parseInt(map.get("userId"));
         Message message = new Message();
         message.setToId(9999099);
-        String content = "";
+        String content;
         String stockId = map.get("stockId");
         content = stockId + map.get("content");
         message.setContent(content);
@@ -207,6 +212,12 @@ public class MessageController {
         return jsonUtil.getJSONString(0);
     }
 
+    /**
+     * 获取评论
+     * @param start limit
+     * @param end offset
+     * @return res:投诉者信息和投诉内容
+     */
     @GetMapping(value = "/complaint",  produces = "application/json;charset=UTF-8")
     public String readComp(int start, int end) {
         List<Message> list = messageService.readComplaint(start, end);
@@ -220,6 +231,11 @@ public class MessageController {
         return jsonUtil.getJSONString(0, res);
     }
 
+    /**
+     * 处理投诉
+     * @param msgId 获取投诉信息
+     * @return json code=0
+     */
     @PutMapping(value = "/complaint", produces = "application/json;charset=UTF-8")
     public String setComp(int msgId) {
         Message msg = messageService.selectById(msgId);

@@ -24,8 +24,11 @@ public class CommentController {
     @Autowired
     ProfileServiceImpl profileService;
 
-
-
+    /**
+     * 发表评论
+     * @param jsonMap content: 评论内容 , entityId:评论对象id，userId:自身id,entityType:评论对象类型
+     * @return jsonstring(状态码)
+     */
     @PostMapping(value = "/add",produces = {"application/json;charset=UTF-8"})
     public String addComment(@RequestBody Map<String, Object> jsonMap) {
         try {
@@ -45,6 +48,12 @@ public class CommentController {
         return jsonUtil.getJSONString(0);
     }
 
+    /**
+     * 通过type和id获取评论详情
+     * @param entityType 类型
+     * @param entityId id
+     * @return 包含此条评论主体和相关用户信息
+     */
     @GetMapping(value = "/entityType={entityType}/entityId={entityId}", produces = {"application/json;charset=UTF-8"})
     public String getComment(@PathVariable int entityType, @PathVariable int entityId) {
         List<Comment> commentList = commentService.getCommentByEntity(entityId, entityType);
@@ -60,6 +69,11 @@ public class CommentController {
         return jsonUtil.getJSONString(0, list);
     }
 
+    /**
+     * 通过id获取评论
+     * @param commentId 评论id
+     * @return 包含此条评论主体和相关用户信息
+     */
     @GetMapping(value = "/{commentId}",produces = {"application/json;charset=UTF-8"})
     public String getCommentEntity(@PathVariable int commentId) {
         Comment comment = commentService.getCommentById(commentId);
