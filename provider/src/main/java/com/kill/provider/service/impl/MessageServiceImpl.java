@@ -50,4 +50,20 @@ public class MessageServiceImpl implements MessageService {
         return messagedao.selectLatestById(messageId);
     }
 
+    @Override
+    public List<Message> readComplaint(int start, int end) {
+        return messagedao.selectComplaint(start, end);
+    }
+
+    @Override
+    public Message selectById(int id) {
+        return messagedao.selectById(id);
+    }
+
+    @Override
+    public int updateRead(int id) {
+        return messagedao.updateReadById(id);
+    }
+
+
 }

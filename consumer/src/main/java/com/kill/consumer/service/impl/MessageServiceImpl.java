@@ -48,4 +48,19 @@ public class MessageServiceImpl implements MessageService {
     public Message selectByMessageId(String messageId) {
         return messageService.selectByMessageId(messageId);
     }
+
+    @Override
+    public List<Message> readComplaint(int start, int end) {
+        return messageService.readComplaint(start, end);
+    }
+
+    @Override
+    public Message selectById(int id) {
+        return messageService.selectById(id);
+    }
+
+    @Override
+    public int updateRead(int id) {
+        return messageService.updateRead(id);
+    }
 }

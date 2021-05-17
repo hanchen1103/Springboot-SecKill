@@ -1,9 +1,11 @@
 package com.kill.consumer.controller;
 
 import com.kill.api.model.Message;
+import com.kill.api.model.Stock;
 import com.kill.api.model.User;
 import com.kill.consumer.service.impl.MessageServiceImpl;
 import com.kill.consumer.service.impl.ProfileServiceImpl;
+import com.kill.consumer.service.impl.StockServiceImpl;
 import com.kill.consumer.service.impl.UserServiceImpl;
 import com.kill.consumer.util.jsonUtil;
 import org.slf4j.Logger;
@@ -33,6 +35,9 @@ public class MessageController {
 
     @Autowired
     ProfileServiceImpl profileService;
+
+    @Autowired
+    StockServiceImpl stockService;
 
     /**
      * 发送信息，首先检验用户是否登录，如果登录成功，则获取所有字段，将文件类型的首先重命名并记录，同时放入服务器的/usr/img
@@ -179,5 +184,51 @@ public class MessageController {
             return jsonUtil.getJSONString(1);
         }
         return jsonUtil.getJSONString(0, map);
+    }
+
+    @PostMapping(value = "/complaint", produces = "application/json;charset=UTF-8")
+    public String comp(@RequestBody Map<String, String> map) {
+        int userId = Integer.parseInt(map.get("userId"));
+        Message message = new Message();
+        message.setToId(9999099);
+        String content = "";
+        String stockId = map.get("stockId");
+        content = stockId + map.get("content");
+        message.setContent(content);
+        message.setFromId(Integer.parseInt(map.get("userId")));
+        message.setCreateDate(new Date());
+        if(messageService.selectLatest(9999099, userId) == null) {
+            message.setHasRead(1);
+            messageService.addMessage(message);
+            return jsonUtil.getJSONString(0);
+        }
+        message.setHasRead(0);
+        messageService.addMessage(message);
+        return jsonUtil.getJSONString(0);
+    }
+
+    @GetMapping(value = "/complaint",  produces = "application/json;charset=UTF-8")
+    public String readComp(int start, int end) {
+        List<Message> list = messageService.readComplaint(start, end);
+        List<Map<String, Object>> res = new LinkedList<>();
+        for(Message i : list) {
+            Map<String, Object> t = new HashMap<>();
+            t.put("profile", profileService.selectByUserId(i.getFromId()));
+            t.put("comp", i);
+            res.add(t);
+        }
+        return jsonUtil.getJSONString(0, res);
+    }
+
+    @PutMapping(value = "/complaint", produces = "application/json;charset=UTF-8")
+    public String setComp(int msgId) {
+        Message msg = messageService.selectById(msgId);
+        String content = msg.getContent();
+        int stockId = content.charAt(0) - '0';
+        Stock stock = stockService.getStockById(stockId);
+        stock.setStatus(999);
+        stockService.updateStockById(stock);
+        messageService.updateRead(msgId);
+        return jsonUtil.getJSONString(0);
     }
 }

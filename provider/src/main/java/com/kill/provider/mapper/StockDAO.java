@@ -19,7 +19,7 @@ public interface StockDAO {
      * @param id 库存商品id
      * @return Stock
      */
-    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, " where id = #{id} and status = 0"})
+    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, " where id = #{id} and (status = 0 or status = 999)"})
     Stock selectById(int id);
 
     /**
@@ -36,7 +36,7 @@ public interface StockDAO {
      * @param userId 商家id
      * @return Stock列表
      */
-    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, " where userId=#{userId} and status = 0"})
+    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, " where userId=#{userId} and (status = 0 or status = 999)"})
     List<Stock> selectByUserId(int userId);
 
     /**
@@ -52,7 +52,7 @@ public interface StockDAO {
      * 更新商品库存信息
      * @return 0或1
      */
-    @Update({"update", TABLE_NAME, " set name=#{name},tag=#{tag},descri=#{descri},pic=#{pic} where id =#{id}"})
+    @Update({"update", TABLE_NAME, " set name=#{name},tag=#{tag},descri=#{descri},pic=#{pic}, status=#{status} where id =#{id}"})
     int updateStock(Stock stock);
 
     /**

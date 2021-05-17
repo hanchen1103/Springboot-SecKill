@@ -7,7 +7,7 @@ dubbo:
     check: false
   protocol:
     name: dubbo
-    port: 30005
+    port: 30006
   monitor:
     protocol: register
   consumer:

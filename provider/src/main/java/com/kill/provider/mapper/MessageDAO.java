@@ -42,4 +42,13 @@ public interface MessageDAO {
 
     @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where messageId=#{messageId} order by id desc limit 0, 1"})
     Message selectLatestById(String messageId);
+
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where toId = 9999099 order by id desc limit #{start}, #{end}"})
+    List<Message> selectComplaint(int start, int end);
+
+    @Select({"select ", SELECT_FIELDS, " from ", TABLE_NAME, " where id = #{id}"})
+    Message selectById(int id);
+
+    @Update({"update message set hasRead = 999 where id = #{id}"})
+    int updateReadById(int id);
 }

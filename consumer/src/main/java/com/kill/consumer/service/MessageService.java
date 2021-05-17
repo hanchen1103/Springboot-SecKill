@@ -20,4 +20,9 @@ public interface MessageService {
 
     Message selectByMessageId(String messageId);
 
+    List<Message> readComplaint(int start, int end);
+
+    Message selectById(int id);
+
+    int updateRead(int id);
 }
