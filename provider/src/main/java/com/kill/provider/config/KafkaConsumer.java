@@ -89,4 +89,17 @@ public class KafkaConsumer {
             ack.acknowledge();
         }
     }
+
+    @KafkaListener(topics = KafkaProducer.TOPIC_RESOURCE, groupId = KafkaProducer.TOPIC_GROUP2)
+    public void topic_Resource(ConsumerRecord<?, ?> record, Acknowledgment ack, @Header(KafkaHeaders.RECEIVED_TOPIC) String topic) throws Exception {
+
+        Optional message = Optional.ofNullable(record.value());
+        if (message.isPresent()) {
+            String msg = String.valueOf(message.get());
+            log.info("topic_order 消费了： Topic:" + topic + ",Message:" + msg);
+            Message mes = JSON.parseObject(msg, Message.class);
+            messageService.addMessage(mes);
+            ack.acknowledge();
+        }
+    }
 }

@@ -1,11 +1,14 @@
 package com.kill.provider.service.impl;
 
+import com.kill.api.model.Message;
 import com.kill.api.model.water;
 import com.kill.api.service.WaterService;
+import com.kill.provider.config.KafkaProducer;
 import com.kill.provider.mapper.WaterDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -15,6 +18,8 @@ public class WaterServiceImpl implements WaterService {
     @Autowired
     WaterDAO waterDAO;
 
+    @Autowired
+    KafkaProducer kafkaProducer;
 
     @Override
     public List<water> selectByMonth(int userId) {
@@ -33,6 +38,12 @@ public class WaterServiceImpl implements WaterService {
 
     @Override
     public Integer addWater(water w) {
+        Message message = new Message();
+        message.setCreateDate(new Date());
+        message.setFromId(9999099);
+        message.setToId(w.getUserId());
+        message.setContent("系统消息:您有一条新的水资源信息已收集");
+        kafkaProducer.sendMessageResource(message);
         return waterDAO.addWater(w);
     }
 

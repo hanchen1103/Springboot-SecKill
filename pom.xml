@@ -20,7 +20,8 @@
 		<module>api</module>
 		<module>consumer</module>
 		<module>provider</module>
-	</modules>
+        <module>limit</module>
+    </modules>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

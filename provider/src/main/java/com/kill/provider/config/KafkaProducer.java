@@ -31,9 +31,14 @@ public class KafkaProducer {
 
     public static final String TOPIC_ORDER = "topic.order";
 
+
     public static final String TOPIC_Collect = "topic.collect";
 
+
     public static final String TOPIC_LIKE = "topic.like";
+
+
+    public static final String TOPIC_RESOURCE = "topic.resource";
 
 
     public void send(Object obj) {
@@ -101,6 +106,26 @@ public class KafkaProducer {
         log.info("准备发送消息为：{}", obj2String);
         //发送消息
         ListenableFuture<SendResult<String, Object>> future = kafkaTemplate.send(TOPIC_LIKE, obj2String);
+        future.addCallback(new ListenableFutureCallback<>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                //发送失败的处理
+                log.info(TOPIC_TEST + " - 生产者 发送订单消息失败：" + throwable.getMessage());
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, Object> stringObjectSendResult) {
+                //成功的处理
+                log.info(TOPIC_TEST + " - 生产者 发送订单消息成功：" + stringObjectSendResult.toString());
+            }
+        });
+    }
+
+    public void sendMessageResource(Object obj) {
+        String obj2String = JSON.toJSONString(obj);
+        log.info("准备发送消息为：{}", obj2String);
+        //发送消息
+        ListenableFuture<SendResult<String, Object>> future = kafkaTemplate.send(TOPIC_RESOURCE, obj2String);
         future.addCallback(new ListenableFutureCallback<>() {
             @Override
             public void onFailure(Throwable throwable) {

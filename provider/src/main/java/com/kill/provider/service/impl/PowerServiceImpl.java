@@ -1,11 +1,14 @@
 package com.kill.provider.service.impl;
 
+import com.kill.api.model.Message;
 import com.kill.api.model.power;
 import com.kill.api.service.PowerService;
+import com.kill.provider.config.KafkaProducer;
 import com.kill.provider.mapper.PowerDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -14,6 +17,9 @@ public class PowerServiceImpl implements PowerService {
 
     @Autowired
     PowerDAO powerDAO;
+
+    @Autowired
+    KafkaProducer kafkaProducer;
 
     @Override
     public List<power> selectByMonth(int userId) {
@@ -32,6 +38,12 @@ public class PowerServiceImpl implements PowerService {
 
     @Override
     public Integer addpower(power p) {
+        Message message = new Message();
+        message.setContent("系统消息:您有一条新的电气资源信息已收集");
+        message.setCreateDate(new Date());
+        message.setFromId(9999099);
+        message.setToId(p.getUserId());
+        kafkaProducer.sendMessageResource(message);
         return powerDAO.addPower(p);
     }
 
