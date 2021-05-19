@@ -56,11 +56,6 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.kill</groupId>
-            <artifactId>distributed-rate-limiter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <!--通用Mapper-->
         <dependency>
             <groupId>tk.mybatis</groupId>

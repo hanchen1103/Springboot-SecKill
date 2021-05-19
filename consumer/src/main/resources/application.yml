@@ -11,7 +11,7 @@ dubbo:
     check:  false
     timeout: 3000
   protocol:
-    port: 20886
+    port: 20881
 
 server:
   port: 6667
