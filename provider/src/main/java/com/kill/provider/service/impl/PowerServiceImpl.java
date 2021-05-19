@@ -5,7 +5,11 @@ import com.kill.api.model.power;
 import com.kill.api.service.PowerService;
 import com.kill.provider.config.KafkaProducer;
 import com.kill.provider.mapper.PowerDAO;
+import com.kill.provider.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -20,6 +24,9 @@ public class PowerServiceImpl implements PowerService {
 
     @Autowired
     KafkaProducer kafkaProducer;
+
+    @Autowired
+    RedisTemplate<String, String> redisTemplate;
 
     @Override
     public List<power> selectByMonth(int userId) {
