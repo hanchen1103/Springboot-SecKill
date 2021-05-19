@@ -21,6 +21,7 @@
 		<module>consumer</module>
 		<module>provider</module>
         <module>limit</module>
+        <module>distributed-rate-limiter</module>
     </modules>
 	<properties>
 		<java.version>11</java.version>

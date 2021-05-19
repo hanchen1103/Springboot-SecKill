@@ -4,9 +4,6 @@ import com.crossoverjie.distributed.annotation.CommonLimit;
 import com.kill.api.model.Gas;
 import com.kill.api.model.power;
 import com.kill.api.model.water;
-import com.kill.consumer.service.GasService;
-import com.kill.consumer.service.PowerService;
-import com.kill.consumer.service.WaterService;
 import com.kill.consumer.service.impl.GasServiceImpl;
 import com.kill.consumer.service.impl.PowerServiceImpl;
 import com.kill.consumer.service.impl.WaterServiceImpl;
@@ -48,7 +45,7 @@ public class ResourceController {
         return jsonUtil.getJSONString(res);
     }
 
-    @CommonLimit
+
     @PostMapping(value = "/gas", produces = {"application/json;charset=UTF-8"})
     public String loadGAS(@RequestBody Map<String, Object> map) {
         Gas w = new Gas();

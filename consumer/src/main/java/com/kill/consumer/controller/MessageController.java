@@ -1,5 +1,6 @@
 package com.kill.consumer.controller;
 
+import com.crossoverjie.distributed.annotation.CommonLimit;
 import com.kill.api.model.Message;
 import com.kill.api.model.Stock;
 import com.kill.api.model.User;
@@ -11,6 +12,7 @@ import com.kill.consumer.util.jsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -21,6 +23,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@ComponentScan(value = "com.kill.consumer.config")
+@ComponentScan(value = "com.crossoverjie.distributed.intercept")
 @RestController
 @RequestMapping("/message")
 public class MessageController {
@@ -46,6 +50,7 @@ public class MessageController {
      * @param request 包含toId(发送对方的id),type(发送消息的类型,有文字，视频，音频，图片),content（消息内容）
      * @return json形式的字符串 code为1代表未登录，code为999代表文件上传失败，code为0代表发送成功
      */
+    @CommonLimit
     @PostMapping(value = "/", produces = "application/json;charset=UTF-8")
     public String addmessage(HttpServletRequest request) {
         int toId =  Integer.parseInt(request.getParameter("toId"));
@@ -112,6 +117,7 @@ public class MessageController {
      * 获取最新的消息记录,于此每一条附带创建时间(_createdate)，相关的用户(user)，昵称（nickName），未读数量（isRead）
      * @return json形式的消息总览列表
      */
+    @CommonLimit
     @GetMapping(value = "/",produces = {"application/json;charset=UTF-8"})
     public String messageList(int userId) {
         List<Message> messageList = messageService.getMessageList(userId, 0, 50);
