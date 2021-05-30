@@ -1,6 +1,10 @@
 package com.kill.consumer.controller;
 
+import com.kill.api.model.Killact;
+import com.kill.api.model.Stock;
+import com.kill.consumer.service.impl.ActServiceImpl;
 import com.kill.consumer.service.impl.StockOrderServiceImpl;
+import com.kill.consumer.service.impl.StockServiceImpl;
 import com.kill.consumer.util.jsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +23,13 @@ public class OrderController {
 
     @Autowired
     private StockOrderServiceImpl stockOrderService;
+
+    @Autowired
+    private ActServiceImpl actService;
+
+    @Autowired
+    private StockServiceImpl stockService;
+
 
     /**
      *
@@ -57,6 +68,32 @@ public class OrderController {
             logger.error("exception", e);
         }
         return String.valueOf(id);
+    }
+
+    @PostMapping(value = "/buy/{stockId}", produces = {"application/json;charset=UTF-8"})
+    public String buy(@PathVariable int stockId, int addSale, int userId) {
+        logger.info("sid=[{}]", stockId);
+        int actId = actService.getStockAct(stockId);
+        if(actId == -1) {
+            Stock stock = stockService.getStockById(stockId);
+            try {
+                stockOrderService.createOrderUseRedisAndKafka(addSale, stockId, userId, stock.getPrice());
+            } catch (Exception e) {
+                logger.error("exception", e);
+                return jsonUtil.getJSONString(999, e.getMessage());
+            }
+        } else {
+            Killact killact = actService.selectById(actId);
+            BigDecimal discount = killact.getDiscount();
+            Stock stock = stockService.getStockById(stockId);
+            try {
+                stockOrderService.createOrderUseRedisAndKafka(addSale, stockId, userId, stock.getPrice().multiply(discount));
+            } catch (Exception e) {
+                logger.error("exception", e);
+                return jsonUtil.getJSONString(999, e.getMessage());
+            }
+        }
+        return jsonUtil.getJSONString(0);
     }
 
 }

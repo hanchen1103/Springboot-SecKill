@@ -62,4 +62,11 @@ public interface StockDAO {
     @Update({"update", TABLE_NAME, " set version = version + 1, sale = sale + #{addSale} where id = #{id} and version=#{version}"})
     int updateStockByOptimisticLock(@Param("addSale") int addSale, @Param("id") int id, @Param("version") int version);
 
+    /**
+     * 热门商品
+     * @return List<Stock>
+     */
+    @Select({"select a.* from stock as a right join (select count(*) as cnt, stockId from stockOrder group by stockId) as b on a.id = b.stockId where a.status != 1 order by b.cnt desc limit 0, 20;"})
+    List<Stock> selectHot();
+
 }

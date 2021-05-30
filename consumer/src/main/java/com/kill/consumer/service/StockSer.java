@@ -3,6 +3,8 @@ package com.kill.consumer.service;
 
 import com.kill.api.model.Stock;
 
+import java.util.List;
+
 public interface StockSer {
 
     /**
@@ -39,5 +41,7 @@ public interface StockSer {
      * @return id
      */
     int addStock(Stock stock);
+
+    List<Stock> selectHot();
 
 }

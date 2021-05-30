@@ -82,5 +82,10 @@ public class StockServiceImpl implements StockService {
         return stock.getId();
     }
 
+    @Override
+    public List<Stock> selectHot() {
+        return stockDAO.selectHot();
+    }
+
 
 }

@@ -2,6 +2,8 @@ package com.kill.api.service;
 
 import com.kill.api.model.Stock;
 
+import java.util.List;
+
 public interface StockService {
 
     /**
@@ -40,4 +42,6 @@ public interface StockService {
     int addStock(Stock stock);
 
     //int updateStockByOptimisticAndKafka(int stockId);
+
+    List<Stock> selectHot();
 }

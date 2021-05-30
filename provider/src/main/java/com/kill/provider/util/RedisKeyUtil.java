@@ -36,6 +36,18 @@ public class RedisKeyUtil {
 
     public final static String REDIS_POWER = "REDIS_POWER";
 
+    public final static String REDIS_ACT = "REDIS_KILLACT";
+
+    public final static String REDIS_PRODUCT_ACT = "REDIS_PRODUCT_ACT";
+
+    public static String getREDIS_PRODUCT_ACT(int stockId) {
+        return REDIS_PRODUCT_ACT + REDIS_SPLIT + stockId;
+    }
+
+    public static String getActKey(int entityId) {
+        return REDIS_ACT + REDIS_SPLIT + entityId;
+    }
+
     public static String getLikeKey(int entityType, int entityId) {
         return REDIS_LIKE + REDIS_SPLIT + entityType + REDIS_SPLIT + entityId;
     }

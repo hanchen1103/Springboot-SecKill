@@ -6,6 +6,8 @@ import com.kill.api.model.Stock;
 import com.kill.api.service.StockService;
 import com.kill.consumer.service.StockSer;
 
+import java.util.List;
+
 
 @Service
 public class StockServiceImpl implements StockSer {
@@ -36,5 +38,10 @@ public class StockServiceImpl implements StockSer {
     @Override
     public int addStock(Stock stock) {
         return stockService.addStock(stock);
+    }
+
+    @Override
+    public List<Stock> selectHot() {
+        return stockService.selectHot();
     }
 }

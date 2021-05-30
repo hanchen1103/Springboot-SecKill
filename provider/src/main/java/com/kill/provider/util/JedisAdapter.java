@@ -55,6 +55,21 @@ public class JedisAdapter implements InitializingBean {
         return 0;
     }
 
+    public long expire(String key, int sec) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.expire(key, sec);
+        } catch (Exception  e) {
+            logger.error("error" + e.getMessage());
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+        return 0;
+    }
+
     public long srem(String key, String value) {
         Jedis jedis = null;
         try {
@@ -204,6 +219,36 @@ public class JedisAdapter implements InitializingBean {
             }
         }
         return 0L;
+    }
+
+    public String setex(String key, String value, int sec) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.setex(key, sec, value);
+        } catch (Exception e){
+            logger.error("error" + e.getMessage());
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
+    }
+
+    public String get(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = pool.getResource();
+            return jedis.get(key);
+        } catch (Exception e){
+            logger.error("error" + e.getMessage());
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+        return null;
     }
 
     public long hsetNum(String key, String value, String count) {
