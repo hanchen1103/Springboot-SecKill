@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @com.alibaba.dubbo.config.annotation.Service
@@ -55,5 +56,11 @@ public class KillServiceImpl implements KillService {
         String productKey = RedisKeyUtil.getREDIS_PRODUCT_ACT(stockId);
         if (jedisAdapter.get(productKey) == null) return -1;
         return Integer.parseInt(jedisAdapter.get(productKey));
+    }
+
+    @Override
+    public Set<String> getJoinStock(int actId) {
+        String actKey = RedisKeyUtil.getActKey(actId);
+        return jedisAdapter.smembers(actKey);
     }
 }

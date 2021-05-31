@@ -7,6 +7,7 @@ import com.kill.api.service.KillService;
 import com.kill.consumer.service.ActService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class ActServiceImpl implements ActService {
@@ -37,5 +38,10 @@ public class ActServiceImpl implements ActService {
     @Override
     public int getStockAct(int stockId) {
         return killService.getStockAct(stockId);
+    }
+
+    @Override
+    public Set<String> getJoinStock(int actId) {
+        return killService.getJoinStock(actId);
     }
 }
