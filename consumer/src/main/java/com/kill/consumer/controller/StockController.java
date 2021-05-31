@@ -78,7 +78,7 @@ public class StockController {
                 assert fileName != null;
                 String suffixName = fileName.substring(fileName.lastIndexOf("."));
                 fileName = UUID.randomUUID() + suffixName;
-                content.append("http://").append(url).append(":").append(port).append("/demo/image/").append(fileName).append("|");
+                content.append("http://").append(url).append(":").append(port).append("/consumer-0.0.1-SNAPSHOT/image/").append(fileName).append("|");
                 File dest = new File(filePath + fileName);
                 if (!dest.getParentFile().exists()) {
                     dest.getParentFile().mkdirs();

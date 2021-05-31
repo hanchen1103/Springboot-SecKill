@@ -80,7 +80,7 @@ public class MessageController {
                 else {
                     fileName = UUID.randomUUID() + ".jpg";
                 }
-                content.append("http://139.196.58.222:80/demo/image/").append(fileName);
+                content.append("http://120.78.188.52:7080/consumer-0.0.1-SNAPSHOT/image/").append(fileName);
                 File dest = new File(filePath + fileName);
                 if (!dest.getParentFile().exists()) {
                     dest.getParentFile().mkdirs();
