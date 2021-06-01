@@ -1,6 +1,10 @@
 package com.kill.api.service;
 
+import com.kill.api.model.StockOrder;
+import org.springframework.core.annotation.Order;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface OrderService {
 
@@ -20,4 +24,7 @@ public interface OrderService {
     void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
 
 
+    StockOrder selectOrderById(int orderId);
+
+    List<StockOrder> selectByUserId(int userId, int start, int end);
 }

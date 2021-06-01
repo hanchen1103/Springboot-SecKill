@@ -70,6 +70,13 @@ public class OrderController {
         return String.valueOf(id);
     }
 
+    /**
+     * 购买商品，汇总redis+kafka(包括折扣)
+     * @param stockId 商品Id
+     * @param addSale 购买数量
+     * @param userId 购买用户
+     * @return json
+     */
     @PostMapping(value = "/buy/{stockId}", produces = {"application/json;charset=UTF-8"})
     public String buy(@PathVariable int stockId, int addSale, int userId) {
         logger.info("sid=[{}]", stockId);
@@ -94,6 +101,28 @@ public class OrderController {
             }
         }
         return jsonUtil.getJSONString(0);
+    }
+
+    /**
+     *
+     * @param stockOrderId 订单ID
+     * @return order info
+     */
+    @GetMapping(value = "", produces = {"application/json;charset=UTF-8"})
+    public String selectById(int stockOrderId) {
+        return jsonUtil.getJSONString(0, stockOrderService.selectOrderById(stockOrderId));
+    }
+
+    /**
+     * 分页加载订单
+     * @param userId 用户id
+     * @param start limit
+     * @param end offset
+     * @return list(json)
+     */
+    @GetMapping(value = "/user", produces = {"application/json;charset=UTF-8"})
+    public String selectById(int userId, int start, int end) {
+        return jsonUtil.getJSONString(0, stockOrderService.selectByUserId(userId, start, end));
     }
 
 }

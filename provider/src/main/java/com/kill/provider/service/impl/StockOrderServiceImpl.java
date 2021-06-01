@@ -17,10 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Transactional(rollbackFor = Exception.class)
 @Service
@@ -116,6 +113,16 @@ public class StockOrderServiceImpl implements OrderService {
         stock.setSale(addSale);
         kafkaProducer.sendOrderTopic(stock);
         logger.info("send kafka success");
+    }
+
+    @Override
+    public StockOrder selectOrderById(int orderId) {
+        return stockOrderDAO.selectById(orderId);
+    }
+
+    @Override
+    public List<StockOrder> selectByUserId(int userId, int start, int end) {
+        return stockOrderDAO.selectOrderUserId(userId, start, end);
     }
 
 }

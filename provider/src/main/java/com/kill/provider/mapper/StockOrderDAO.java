@@ -46,11 +46,10 @@ public interface StockOrderDAO {
 
     /**
      * 根据用户Id获取订单
-     * @param createDate 日期
      * @param start 初始量
      * @param offset 偏移量
      * @return 订单列表
      */
-    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, "where userId=#{userId} order by createDate desc limit #{start},{offset}"})
-    List<StockOrder> selectOrderUserId(int userId, Date createDate, int start, int offset);
+    @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, "where userId=#{userId} order by createDate desc limit #{start},#{offset}"})
+    List<StockOrder> selectOrderUserId(int userId, int start, int offset);
 }

@@ -2,10 +2,12 @@ package com.kill.consumer.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.kill.api.model.StockOrder;
 import com.kill.api.service.OrderService;
 import com.kill.consumer.service.StockOrderService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Service
 public class StockOrderServiceImpl implements StockOrderService {
@@ -21,6 +23,16 @@ public class StockOrderServiceImpl implements StockOrderService {
     @Override
     public void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
         orderService.createOrderUseRedisAndKafka(addSale, stockId, userId, price);
+    }
+
+    @Override
+    public StockOrder selectOrderById(int orderId) {
+        return orderService.selectOrderById(orderId);
+    }
+
+    @Override
+    public List<StockOrder> selectByUserId(int userId, int start, int end) {
+        return orderService.selectByUserId(userId, start, end);
     }
 
 
