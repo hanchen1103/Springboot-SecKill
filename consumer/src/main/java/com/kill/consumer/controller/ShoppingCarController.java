@@ -63,5 +63,11 @@ public class ShoppingCarController {
         return jsonUtil.getJSONString(0, res);
     }
 
+    @CommonLimit
+    @DeleteMapping(value = "") 
+    public String deleteShop(int shopId) {
+        return jsonUtil.getJSONString(0, shopCarService.delCar(shopId));
+    }
+
 
 }

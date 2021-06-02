@@ -13,7 +13,7 @@ public interface ShoppingCarService {
     int addCar(ShopCar shopCar);
 
     /**
-     * 加商品从购物车中删除
+     * 商品从购物车中删除
      * @param id 用户id
      * @return 购物车数量
      */
