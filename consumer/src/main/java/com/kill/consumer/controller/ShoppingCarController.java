@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ComponentScan(value = "com.kill.consumer.config")
 @ComponentScan(value = "com.crossoverjie.distributed.intercept")
@@ -64,10 +61,14 @@ public class ShoppingCarController {
     }
 
     @CommonLimit
-    @DeleteMapping(value = "") 
-    public String deleteShop(int shopId) {
-        return jsonUtil.getJSONString(0, shopCarService.delCar(shopId));
+    @DeleteMapping(value = "", produces = {"application/json;charset=UTF-8"})
+    public String deleteShop(@RequestBody Map<String, String> map) {
+        String str = map.get("shopCar");
+        String[] list = str.split(",");
+        for(String i : list) {
+            shopCarService.delCar(Integer.parseInt(i));
+        }
+        return jsonUtil.getJSONString(0);
     }
-
 
 }
