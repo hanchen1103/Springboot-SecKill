@@ -60,6 +60,11 @@ public class ShoppingCarController {
         return jsonUtil.getJSONString(0, res);
     }
 
+    /**
+     * 删除多项shop
+     * @param map string
+     * @return json
+     */
     @CommonLimit
     @DeleteMapping(value = "", produces = {"application/json;charset=UTF-8"})
     public String deleteShop(@RequestBody Map<String, String> map) {

@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
     public User selectById(int id) {
         return userService.selectById(id);
     }
+
+    @Override
+    public void updateHead_url(String head_url, int id) {
+        userService.updateHead_url(head_url, id);
+    }
 }

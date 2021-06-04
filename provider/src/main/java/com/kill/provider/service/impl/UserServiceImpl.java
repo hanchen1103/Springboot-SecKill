@@ -21,4 +21,9 @@ public class UserServiceImpl implements UserService {
     public User selectById(int id) {
         return useDAO.selectById(id);
     }
+
+    @Override
+    public void updateHead_url(String head_url, int id) {
+        useDAO.updateHead_url(head_url, id);
+    }
 }
