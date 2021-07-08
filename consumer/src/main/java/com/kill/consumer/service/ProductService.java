@@ -8,4 +8,6 @@ public interface ProductService {
     Integer getCost(int a);
 
     List<spiderProduct> getSpider(String name);
+
+    int delete();
 }

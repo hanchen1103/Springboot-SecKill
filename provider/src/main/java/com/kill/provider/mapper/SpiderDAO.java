@@ -1,6 +1,7 @@
 package com.kill.provider.mapper;
 
 import com.kill.api.model.spiderProduct;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.mybatis.spring.annotation.MapperScan;
@@ -17,5 +18,8 @@ public interface SpiderDAO {
 
     @Select({"select ", SELECT_NAME, " from ", TABLE_NAME, " where name = #{name}"})
     List<spiderProduct> selectByname(String name);
+
+    @Delete({"truncate table python_spider"})
+    int deletetable();
 
 }

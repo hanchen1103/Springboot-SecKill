@@ -23,4 +23,9 @@ public class ProductServiceImpl implements ProductService {
     public List<spiderProduct> getSpider(String name) {
         return costService.spider(name);
     }
+
+    @Override
+    public int delete() {
+        return costService.delete();
+    }
 }

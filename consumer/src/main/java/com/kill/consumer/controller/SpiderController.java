@@ -24,7 +24,7 @@ public class SpiderController {
     @Autowired
     ProductServiceImpl productService;
 
-    CountDownLatch countDownLatch = new CountDownLatch(1);
+    //CountDownLatch countDownLatch = new CountDownLatch(1);
 
 
     /**
@@ -43,6 +43,11 @@ public class SpiderController {
 //        thread.start();
 //        countDownLatch.await();
         return jsonUtil.getJSONString(0, productService.getSpider(msg));
+    }
+
+    @DeleteMapping(value = "")
+    public String deleteAll() {
+        return jsonUtil.getJSONString(0, productService.delete());
     }
 
 }

@@ -8,4 +8,6 @@ public interface CostService {
     Integer add(int cost);
 
     List<spiderProduct> spider(String name);
+
+    int delete();
 }
