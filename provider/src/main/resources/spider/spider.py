@@ -41,7 +41,7 @@ def get_all(url_map):
     for _ in rs:
         u = _.a.attrs['href']
         price = _.strong.i
-        map["https:" + str(u)] = str(price).replace("<i>", "").replace("</i>", "")
+        map["https:" + str(u)] = str(price).replace("<i>", "").replace("</i>", "").split('>')[1]
 
 
 def get_infor():
