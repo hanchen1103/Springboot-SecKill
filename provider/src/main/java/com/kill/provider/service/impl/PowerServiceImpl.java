@@ -1,14 +1,8 @@
 package com.kill.provider.service.impl;
 
 import com.kill.api.model.Message;
-import com.kill.api.model.power;
-import com.kill.api.service.PowerService;
 import com.kill.provider.config.KafkaProducer;
-import com.kill.provider.mapper.PowerDAO;
-import com.kill.provider.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

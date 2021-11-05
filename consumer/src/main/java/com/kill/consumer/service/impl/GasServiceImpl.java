@@ -2,7 +2,6 @@ package com.kill.consumer.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
-import com.kill.api.model.Gas;
 import com.kill.consumer.service.GasService;
 
 import java.util.List;

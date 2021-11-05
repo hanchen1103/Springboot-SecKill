@@ -1,7 +1,5 @@
 package com.kill.consumer.service;
 
-import com.kill.api.model.Gas;
-
 import java.util.List;
 
 public interface GasService {

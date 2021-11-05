@@ -1,7 +1,5 @@
 package com.kill.consumer.service;
 
-import com.kill.api.model.water;
-
 import java.util.List;
 
 public interface WaterService {

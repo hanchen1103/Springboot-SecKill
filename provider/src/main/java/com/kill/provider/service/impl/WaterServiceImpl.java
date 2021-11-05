@@ -1,10 +1,7 @@
 package com.kill.provider.service.impl;
 
 import com.kill.api.model.Message;
-import com.kill.api.model.water;
-import com.kill.api.service.WaterService;
 import com.kill.provider.config.KafkaProducer;
-import com.kill.provider.mapper.WaterDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

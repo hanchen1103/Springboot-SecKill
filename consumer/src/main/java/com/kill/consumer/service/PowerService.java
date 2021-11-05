@@ -1,7 +1,5 @@
 package com.kill.consumer.service;
 
-import com.kill.api.model.power;
-
 import java.util.List;
 
 public interface PowerService {
