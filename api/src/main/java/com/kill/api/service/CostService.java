@@ -5,6 +5,7 @@ import com.kill.api.model.spiderProduct;
 import java.util.List;
 
 public interface CostService {
+
     Integer add(int cost);
 
     List<spiderProduct> spider(String name);

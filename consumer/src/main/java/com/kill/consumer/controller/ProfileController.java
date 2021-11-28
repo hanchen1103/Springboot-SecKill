@@ -5,6 +5,7 @@ import com.kill.api.model.Profile;
 import com.kill.api.model.User;
 import com.kill.consumer.service.impl.LikeServiceImpl;
 import com.kill.consumer.service.impl.ProfileServiceImpl;
+import com.kill.consumer.service.impl.UploadFileServiceImpl;
 import com.kill.consumer.service.impl.UserServiceImpl;
 import com.kill.consumer.util.jsonUtil;
 import javassist.runtime.Inner;
@@ -38,6 +39,8 @@ public class ProfileController {
     @Autowired
     LikeServiceImpl followService;
 
+    @Autowired
+    UploadFileServiceImpl uploadFileService;
 
     /**
      * 获取所有用户信息列表,分页加载,分页数量由前端规定，通过selectAll加载所需要的用户详情数量

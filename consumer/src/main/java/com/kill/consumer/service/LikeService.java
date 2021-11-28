@@ -1,6 +1,7 @@
 package com.kill.consumer.service;
 
 public interface LikeService {
+
     Long getLikeCount(int entityType, int entityId);
 
     Long like(int userId, int entityType, int entityId);
