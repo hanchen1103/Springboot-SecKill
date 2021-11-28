@@ -14,7 +14,6 @@ public class AnaController {
     @Autowired
     AnaServiceImpl anaService;
 
-
     /**
      * 新增点赞
      * @return 返回本月新增点赞的数量

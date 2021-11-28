@@ -1,6 +1,5 @@
 package com.kill.consumer.controller;
 
-import com.crossoverjie.distributed.annotation.CommonLimit;
 import com.kill.api.model.ShopCar;
 import com.kill.consumer.service.impl.ShopCarServiceImpl;
 import com.kill.consumer.service.impl.StockServiceImpl;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @ComponentScan(value = "com.kill.consumer.config")
-@ComponentScan(value = "com.crossoverjie.distributed.intercept")
 @RestController
 @RequestMapping("shop-car")
 public class ShoppingCarController {
@@ -44,7 +42,6 @@ public class ShoppingCarController {
      * @param limit offset
      * @return json包装的List<Map<String, Object>> 包含shopCar和stock
      */
-    @CommonLimit
     @GetMapping(value = "/{userId}/start={start}/limit={limit}", produces = {"application/json;charset=UTF-8"})
     public String selectCar(@PathVariable("userId") int userId,
                             @PathVariable("start") int start,
@@ -65,7 +62,6 @@ public class ShoppingCarController {
      * @param map string
      * @return json
      */
-    @CommonLimit
     @DeleteMapping(value = "", produces = {"application/json;charset=UTF-8"})
     public String deleteShop(@RequestBody Map<String, String> map) {
         String str = map.get("shopCar");

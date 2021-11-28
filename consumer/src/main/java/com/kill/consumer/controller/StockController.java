@@ -1,7 +1,6 @@
 package com.kill.consumer.controller;
 
 
-import com.crossoverjie.distributed.annotation.CommonLimit;
 import com.kill.api.model.Stock;
 import com.kill.consumer.service.impl.StockServiceImpl;
 import com.kill.consumer.util.jsonUtil;
@@ -25,7 +24,6 @@ import java.util.UUID;
 
 
 @ComponentScan(value = "com.kill.consumer.config")
-@ComponentScan(value = "com.crossoverjie.distributed.intercept")
 @RestController
 @RequestMapping("/stock")
 public class StockController {
@@ -35,10 +33,10 @@ public class StockController {
     @Autowired
     private StockServiceImpl stockService;
 
-    @Value("${my.url}")
+    @Value("${file.url-local}")
     private String url;
 
-    @Value("${my.port}")
+    @Value("${file.port}")
     private String port;
 
     /**
@@ -46,7 +44,6 @@ public class StockController {
      * @param id 商品库存id
      * @return 商品信息
      */
-    @CommonLimit
     @GetMapping(path = "/{id}", produces = {"application/json;charset=UTF-8"})
     public String getStock(@PathVariable("id") int id) {
         return jsonUtil.getJSONString(0, stockService.getStockById(id));

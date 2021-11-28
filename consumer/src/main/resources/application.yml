@@ -2,7 +2,7 @@ dubbo:
   application:
     name:  dubbo-consumer
   registry:
-    address: 120.78.188.52:2181
+    address: 110.40.192.207:2181
     protocol: zookeeper
     check: false
   monitor:
@@ -26,7 +26,7 @@ spring:
     allow-bean-definition-overriding: true #当遇到同样名字的时候，是否允许覆盖注册
 
   kafka:
-    bootstrap-servers: 120.78.188.52:9092
+    bootstrap-servers: 110.40.192.207:9092
     consumer:
       # 自动提交的时间间隔 在spring boot 2.X 版本中这里采用的是值的类型为Duration 需要符合特定的格式，如1S,1M,2H,5D
       auto-commit-interval: 1S
@@ -45,7 +45,7 @@ spring:
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://139.196.175.139/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://110.40.192.207/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
     driver-class-name: com.mysql.jdbc.Driver
 
 
@@ -76,13 +76,14 @@ logging:
     com:
       dubbo:
         consumer:
-          mapper : debug
-
-redis:
-  limit: 5
+          mapper: debug
 
 
-
-my:
-  url: 120.78.188.52
-  port: 7080
+file:
+  path-mac: /Users/hanchenzhu/Pictures/img/
+  path-centos: /usr/local/img/
+  url-web: 110.40.192.207
+  url-local: 127.0.0.1
+  port: 8080
+  suffix-mac: /image/
+  suffix-centos: /newproject-0.0.1-SNAPSHOT/image/

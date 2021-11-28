@@ -8,7 +8,7 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.dubbo</groupId>
+    <groupId>com.dubbo.consumer</groupId>
     <artifactId>consumer</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>consumer</name>
@@ -128,16 +128,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.48</version>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>top.crossoverjie.opensource</groupId>-->
-<!--            <artifactId>distributed-redis-tool</artifactId>-->
-<!--            <version>1.0.4</version>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>com.kill</groupId>
-            <artifactId>distributed-rate-limiter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

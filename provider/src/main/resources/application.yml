@@ -2,7 +2,7 @@ dubbo:
   application:
     name: dubbo-provider
   registry:
-    address: 120.78.188.52:2181
+    address: 110.40.192.207:2181
     protocol: zookeeper
     check: false
   protocol:
@@ -23,12 +23,12 @@ spring:
 
   elasticsearch:
     rest:
-      uris: 120.78.188.52:9200
+      uris: 110.40.192.207:9200
 
   datasource:
     username: root
     password: 123456
-    url: jdbc:mysql://139.196.175.139/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://110.40.192.207/kill?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 
@@ -48,7 +48,7 @@ spring:
         max-wait: -1ms
         min-idle: 8
   kafka:
-    bootstrap-servers: 120.78.188.52:9092
+    bootstrap-servers: 110.40.192.207:9092
     producer:
       # 发生错误后，消息重发的次数。
       retries: 0

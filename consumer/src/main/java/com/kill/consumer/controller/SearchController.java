@@ -1,6 +1,5 @@
 package com.kill.consumer.controller;
 
-import com.crossoverjie.distributed.annotation.CommonLimit;
 import com.kill.api.model.history;
 import com.kill.consumer.service.impl.HistoryServiceImpl;
 import com.kill.consumer.service.impl.SearchServiceImpl;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @ComponentScan(value = "com.kill.consumer.config")
-@ComponentScan(value = "com.crossoverjie.distributed.intercept")
 @RestController
 @RequestMapping("/search")
 public class SearchController {
@@ -31,7 +29,6 @@ public class SearchController {
      * @param q 搜索词
      * @return list<stock>或List<profile>
      */
-    @CommonLimit
     @GetMapping(value = "", produces = "application/json;charset=UTF-8")
     public String searchstock(int type, String q, int userId) {
         history his = new history();
