@@ -18,16 +18,25 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public void addProfile(Profile profile) {
+        if(profile == null) {
+            throw new NullPointerException("profile can't be null");
+        }
         profileDAO.addProfile(profile);
     }
 
     @Override
-    public Profile selectByUserId(int userId) {
+    public Profile selectByUserId(Integer userId) {
+        if(userId == null) {
+            throw new NullPointerException("userId can't be null");
+        }
         return profileDAO.selectByUserId(userId);
     }
 
     @Override
-    public List<Profile> selectAll(int start, int end) {
+    public List<Profile> selectAll(Integer start, Integer end) throws IllegalAccessException {
+        if(start < 0 || end < 0) {
+            throw new IllegalAccessException("wrong `start` or `end` form");
+        }
         return profileDAO.selectAll(start, end);
     }
 
@@ -37,22 +46,31 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public void updateHead_url(String head_url, int userId) {
+    public void updateHead_url(String head_url, Integer userId) throws IllegalAccessException {
+        if(head_url == null || head_url.isEmpty() || userId == null) {
+            throw new IllegalAccessException();
+        }
         profileDAO.updateHead_url(head_url, userId);
     }
 
     @Override
-    public int count() {
+    public Integer count() {
         return profileDAO.count();
     }
 
     @Override
-    public void updateStatus(int userId) {
+    public void updateStatus(Integer userId) {
+        if(userId == null) {
+            throw new NullPointerException("userId can't be null");
+        }
         profileDAO.updateStatus(userId);
     }
 
     @Override
-    public void cancelStatus(int userId) {
+    public void cancelStatus(Integer userId) {
+        if(userId == null) {
+            throw new NullPointerException("userId can't be null");
+        }
         profileDAO.cancelStatus(userId);
     }
 }

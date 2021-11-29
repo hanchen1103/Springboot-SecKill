@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class StockSeralizer implements Serializer<Stock> {
+
     @Override
     public void configure(Map<String, ?> configs, boolean isKey) {
 

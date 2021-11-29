@@ -15,7 +15,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public List<Comment> getCommentByEntity(int entityId, int entityType) {
+    public List<Comment> getCommentByEntity(Integer entityId, Integer entityType) {
         return commentService.getCommentByEntity(entityId, entityType);
     }
 
@@ -25,17 +25,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public int getCommentCount(int entityId, int entityType) {
+    public int getCommentCount(Integer entityId, Integer entityType) {
         return commentService.getCommentCount(entityId, entityType);
     }
 
     @Override
-    public boolean deleteComment(int commentId) {
+    public boolean deleteComment(Integer commentId) {
         return commentService.deleteComment(commentId);
     }
 
     @Override
-    public Comment getCommentById(int id) {
+    public Comment getCommentById(Integer id) {
         return commentService.getCommentById(id);
     }
 }

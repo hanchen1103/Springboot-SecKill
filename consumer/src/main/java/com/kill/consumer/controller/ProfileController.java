@@ -8,7 +8,6 @@ import com.kill.consumer.service.impl.ProfileServiceImpl;
 import com.kill.consumer.service.impl.UploadFileServiceImpl;
 import com.kill.consumer.service.impl.UserServiceImpl;
 import com.kill.consumer.util.jsonUtil;
-import javassist.runtime.Inner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.parser.Entity;
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,49 +46,44 @@ public class ProfileController {
      */
     @PostMapping(value = "/all", produces = "application/json;charset=UTF-8")
     public String all(@RequestBody Map<String, String> map) {
-        int start = Integer.parseInt(map.get("current"));
-        int end = Integer.parseInt(map.get("pageSize"));
-        Map<String, Object> res = new HashMap<>();
-        res.put("count", profileService.count());
-        start -= 1;
-        res.put("list", profileService.selectAll(start * end, end));
-        return jsonUtil.getJSONString(0, res);
+        try {
+            int start = Integer.parseInt(map.get("current"));
+            int end = Integer.parseInt(map.get("pageSize"));
+            Map<String, Object> res = new HashMap<>();
+            res.put("count", profileService.count());
+            start -= 1;
+            res.put("list", profileService.selectAll(start * end, end));
+            return jsonUtil.getJSONString(0, res);
+        } catch (NullPointerException | NumberFormatException | IllegalAccessException e) {
+            logger.error(e.getMessage());
+            return jsonUtil.getJSONString(500);
+        }
     }
 
-    /**
-     * 获取用户自身的摄影作品列表,解析createDate字段,按照yyyy年MM月dd日HH:mm:ss的形式放入map中。
-     * @return 用json包装的包含所有用户自身的摄影作品和日期的map的列表。
-     */
-    @GetMapping(value = "/", produces = "application/json;charset=UTF-8")
-    public String getProfile(int userId) {
-        Map<String, Object> map = new HashMap<>();
-        Profile pro = profileService.selectByUserId(userId);
-        map.put("curuser", userSevice.selectById(userId));
-        map.put("profile", pro);
-
-        List<Map<String, Object>> vl = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-        map.put("vl", vl);
-        return jsonUtil.getJSONString(0, map);
-    }
 
     /**
-     * web端查看profile详情
+     * 查看profile详情
      * @param map userId为用户id，otherId代表查看对方id
      * @return json形式的字符串，map中包含自己的用户详情，对方的用户详情
      */
     @PostMapping(value = "/manager", produces = "application/json;charset=UTF-8")
     public String getManager(@RequestBody Map<String, String> map) {
-        int userId = Integer.parseInt(map.get("userId"));
-        int otherId = Integer.parseInt(map.get("otherId"));
-        Profile pro = profileService.selectByUserId(userId);
-        User u = userSevice.selectById(userId);
-        Map<String, Object> res = new HashMap<>();
-        res.put("ownProfile", pro);
-        res.put("otherProfile", profileService.selectByUserId(otherId));
-        res.put("user", u);
-        res.put("otherUser", userSevice.selectById(otherId));
-        return jsonUtil.getJSONString(0, res);
+        try {
+            int userId = Integer.parseInt(map.get("userId"));
+            int otherId = Integer.parseInt(map.get("otherId"));
+            Profile pro = profileService.selectByUserId(userId);
+            User u = userSevice.selectById(userId);
+            Map<String, Object> res = new HashMap<>();
+            res.put("ownProfile", pro);
+            res.put("otherProfile", profileService.selectByUserId(otherId));
+            res.put("user", u);
+            res.put("otherUser", userSevice.selectById(otherId));
+            return jsonUtil.getJSONString(0, res);
+        } catch (NullPointerException | NumberFormatException e) {
+            logger.error(e.getMessage());
+            return jsonUtil.getJSONString(500);
+        }
+
     }
 
     /**
@@ -133,9 +125,14 @@ public class ProfileController {
         String cardID = (String) map.getOrDefault("cardID", " ");
         String job = (String) map.getOrDefault("job", " ");
         String birth = (String) map.getOrDefault("birthDay", " ");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date birthDay = sdf.parse(birth);
-        profileService.updateProfile(bio, sex, name, nickName, location, birthDay, telNum, cardID, job, Integer.parseInt((String) map.get("userId")));
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date birthDay = sdf.parse(birth);
+            profileService.updateProfile(bio, sex, name, nickName, location, birthDay, telNum, cardID, job, Integer.parseInt((String) map.get("userId")));
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+            profileService.updateProfile(bio, sex, name, nickName, location, null, telNum, cardID, job, Integer.parseInt((String) map.get("userId")));
+        }
         return jsonUtil.getJSONString(0);
     }
 
@@ -171,28 +168,13 @@ public class ProfileController {
      */
     @PostMapping(value = "/head_url",  produces = "application/json;charset=UTF-8")
     public String updateHeadurl(HttpServletRequest request) {
-        String filePath = "/usr/img/";
-        //String filePath = "D:\\linux\\";
-        MultipartFile file = ((MultipartHttpServletRequest) request).getFiles("file").get(0);
-        if (file.isEmpty()) {
-            return jsonUtil.getJSONString(999, "上传文件失败");
-        }
-        String fileName = file.getOriginalFilename();
-        assert fileName != null;
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        fileName = UUID.randomUUID() + suffixName;
-        userSevice.updateHead_url("http://120.78.188.52:7080/consumer-0.0.1-SNAPSHOT/image/" + fileName, Integer.parseInt(request.getParameter("userId")));
-        profileService.updateHead_url("http://120.78.188.52:7080/consumer-0.0.1-SNAPSHOT/image/" + fileName, Integer.parseInt(request.getParameter("userId")));
-        File dest = new File(filePath + fileName);
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
         try {
-            file.transferTo(dest);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return jsonUtil.getJSONString(999, "上传失败");
+            MultipartFile multipartFile = ((MultipartHttpServletRequest) request).getFiles("file").get(0);
+            Integer userId = Integer.parseInt(request.getParameter("userId"));
+            return jsonUtil.getJSONString(200, uploadFileService.uploadHeadUrl(multipartFile, userId));
+        } catch (NullPointerException | NumberFormatException | IllegalAccessException | IOException e) {
+            logger.error(e.getMessage());
+            return jsonUtil.getJSONString(500, "upload avatar failed");
         }
-        return jsonUtil.getJSONString(0);
     }
 }

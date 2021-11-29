@@ -11,7 +11,6 @@ public class RedisTemplateUtil {
     @Resource
     RedisTemplate<String, String> redis;
 
-
     public Object add(String key, Integer num) {
         return key == null ? null : redis.opsForValue().increment(key, num);
     }

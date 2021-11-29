@@ -8,13 +8,14 @@ import com.kill.consumer.service.ShoppingCarService;
 import java.util.List;
 
 @Service
+@org.springframework.stereotype.Service
 public class ShopCarServiceImpl implements ShoppingCarService {
 
     @Reference
     com.kill.api.service.ShoppingCarService shoppingCarService;
 
     @Override
-    public int addCar(int userId, int stockId, String size) {
+    public int addCar(Integer userId, Integer stockId, String size) {
         ShopCar shopCar = new ShopCar();
         shopCar.setSize(size);
         shopCar.setUserId(userId);
@@ -23,17 +24,17 @@ public class ShopCarServiceImpl implements ShoppingCarService {
     }
 
     @Override
-    public int delCar(int id) {
+    public int delCar(Integer id) throws IllegalAccessException {
         return shoppingCarService.delCar(id);
     }
 
     @Override
-    public int countCar(int userId) {
+    public int countCar(Integer userId) throws IllegalAccessException {
         return shoppingCarService.countCar(userId);
     }
 
     @Override
-    public List<ShopCar> getCar(int userId, int start, int offset) {
+    public List<ShopCar> getCar(Integer userId, Integer start, Integer offset) throws IllegalAccessException {
         return shoppingCarService.getCar(userId, start, offset);
     }
 }

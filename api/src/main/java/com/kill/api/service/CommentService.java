@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface CommentService {
 
-    List<Comment> getCommentByEntity(int entityId, int entityType);
+    List<Comment> getCommentByEntity(Integer entityId, Integer entityType);
 
     int addComment(Comment comment);
 
-    int getCommentCount(int entityId, int entityType);
+    int getCommentCount(Integer entityId, Integer entityType);
 
-    boolean deleteComment(int commentId);
+    boolean deleteComment(Integer commentId);
 
-    Comment getCommentById(int id);
+    Comment getCommentById(Integer id);
 
 }

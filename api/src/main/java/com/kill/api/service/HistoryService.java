@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HistoryService {
 
-    List<history> selectByUserId(int userId);
+    List<history> selectByUserId(Integer userId);
 
-    int addQuestion(history h);
+    Integer addQuestion(history h);
 }

@@ -1,13 +1,11 @@
 package com.kill.consumer.controller;
 
 
+import com.kill.api.model.FileType;
 import com.kill.api.model.Message;
 import com.kill.api.model.Stock;
 import com.kill.api.model.User;
-import com.kill.consumer.service.impl.MessageServiceImpl;
-import com.kill.consumer.service.impl.ProfileServiceImpl;
-import com.kill.consumer.service.impl.StockServiceImpl;
-import com.kill.consumer.service.impl.UserServiceImpl;
+import com.kill.consumer.service.impl.*;
 import com.kill.consumer.util.jsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +40,9 @@ public class MessageController {
     @Autowired
     StockServiceImpl stockService;
 
+    @Autowired
+    UploadFileServiceImpl uploadFileService;
+
     /**
      * 发送信息，首先检验用户是否登录，如果登录成功，则获取所有字段，将文件类型的首先重命名并记录，同时放入服务器的/usr/img
      * 路径下，接着新建消息对象，将字段都填入，fromId填写本用户的Id,toId填写发送对方的id，包括内容的路径或者文字，
@@ -51,44 +52,17 @@ public class MessageController {
      */
     @PostMapping(value = "/", produces = "application/json;charset=UTF-8")
     public String addmessage(HttpServletRequest request) {
-        int toId =  Integer.parseInt(request.getParameter("toId"));
-        int userId = Integer.parseInt(request.getParameter("userId"));
-        StringBuilder content = new StringBuilder();
+        StringBuilder content;
         try {
+            int toId =  Integer.parseInt(request.getParameter("toId"));
+            int userId = Integer.parseInt(request.getParameter("userId"));
             User user = userService.selectById(toId);
-            if(user == null) {
-                return jsonUtil.getJSONString(1, "对象不存在");
-            }
-            String filePath = "/usr/img/";
-            String type = request.getParameter("type");
-            if("text".equals(type))
+            int type = Integer.parseInt(request.getParameter("type"));
+            if(type == FileType.text) {
                 content = new StringBuilder(request.getParameter("content"));
-
-            else {
-                MultipartFile t = ((MultipartHttpServletRequest) request).getFiles("file").get(0);
-                if (t.isEmpty()) {
-                    return jsonUtil.getJSONString(999, "上传文件失败");
-                }
-                String fileName = t.getOriginalFilename();
-                assert fileName != null;
-                String suffixName = fileName.substring(fileName.lastIndexOf("."));
-                if(".mp3".equals(suffixName)) {
-                    fileName = UUID.randomUUID() + suffixName;
-                }
-                else {
-                    fileName = UUID.randomUUID() + ".jpg";
-                }
-                content.append("http://120.78.188.52:7080/consumer-0.0.1-SNAPSHOT/image/").append(fileName);
-                File dest = new File(filePath + fileName);
-                if (!dest.getParentFile().exists()) {
-                    dest.getParentFile().mkdirs();
-                }
-                try {
-                    t.transferTo(dest);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return jsonUtil.getJSONString(999, "上传失败");
-                }
+            } else {
+                MultipartFile multipartFile = ((MultipartHttpServletRequest) request).getFiles("file").get(0);
+                content = new StringBuilder(uploadFileService.uploadMessageFile(multipartFile));
             }
             Message message = new Message();
             message.setCreateDate(new Date());
@@ -104,8 +78,8 @@ public class MessageController {
             messageService.addMessage(message);
             return jsonUtil.getJSONString(0);
         } catch(Exception e) {
-            logger.error("error" + e.getMessage());
-            return jsonUtil.getJSONString(1, "发送失败");
+            logger.error(e.getMessage());
+            return jsonUtil.getJSONString(500, "发送失败");
         }
     }
 
@@ -117,23 +91,28 @@ public class MessageController {
      */
     @GetMapping(value = "/",produces = {"application/json;charset=UTF-8"})
     public String messageList(int userId) {
-        List<Message> messageList = messageService.getMessageList(userId, 0, 50);
-        List<Map<String, Object>> messages = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-        for(Message message : messageList) {
-            Map<String, Object> m = new HashMap<>();
-            m.put("mess", message);
-            Date date = message.getCreateDate();
-            String newdate = sdf.format(date);
-            m.put("_cretedate", newdate);
-            int targetId = message.getFromId() == userId ? message.getToId() : message.getFromId();
-            m.put("user", userService.selectById(targetId));
-            m.put("nickName", profileService.selectByUserId(targetId).getNickName());
-            int isRead = message.getFromId() == userId ? 0 : message.getHasRead();
-            m.put("isRead", isRead);
-            messages.add(m);
+        try {
+            List<Message> messageList = messageService.getMessageList(userId, 0, 50);
+            List<Map<String, Object>> messages = new ArrayList<>();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+            for(Message message : messageList) {
+                Map<String, Object> m = new HashMap<>();
+                m.put("mess", message);
+                Date date = message.getCreateDate();
+                String newdate = sdf.format(date);
+                m.put("_cretedate", newdate);
+                int targetId = message.getFromId() == userId ? message.getToId() : message.getFromId();
+                m.put("user", userService.selectById(targetId));
+                m.put("nickName", profileService.selectByUserId(targetId).getNickName());
+                int isRead = message.getFromId() == userId ? 0 : message.getHasRead();
+                m.put("isRead", isRead);
+                messages.add(m);
+            }
+            return jsonUtil.getJSONString(0, messages);
+        } catch (IllegalAccessException | NumberFormatException e) {
+            logger.error(e.getMessage());
         }
-        return jsonUtil.getJSONString(0, messages);
+        return jsonUtil.getJSONString(500);
     }
 
     /**
@@ -157,8 +136,13 @@ public class MessageController {
         if(s[0].equals(String.valueOf(userId))) otherId = Integer.parseInt(s[1]);
         else otherId = Integer.parseInt(s[0]);
         Message mes = messageService.selectByMessageId(messageId);
-        if(userId == mes.getToId())
-            messageService.isRead(userId, otherId);
+        try {
+            if(userId == mes.getToId())
+                messageService.isRead(userId, otherId);
+        } catch (IllegalAccessException e) {
+            logger.error(e.getMessage());
+            return jsonUtil.getJSONString(500);
+        }
         map.put("fromUser", userService.selectById(userId));
         map.put("toUser", userService.selectById(otherId));
         try {
@@ -222,16 +206,21 @@ public class MessageController {
      * @return res:投诉者信息和投诉内容
      */
     @GetMapping(value = "/complaint",  produces = "application/json;charset=UTF-8")
-    public String readComp(int start, int end) {
-        List<Message> list = messageService.readComplaint(start, end);
-        List<Map<String, Object>> res = new LinkedList<>();
-        for(Message i : list) {
-            Map<String, Object> t = new HashMap<>();
-            t.put("profile", profileService.selectByUserId(i.getFromId()));
-            t.put("comp", i);
-            res.add(t);
+    public String readComp(Integer start, Integer end) {
+        try {
+            List<Message> list = messageService.readComplaint(start, end);
+            List<Map<String, Object>> res = new LinkedList<>();
+            for(Message i : list) {
+                Map<String, Object> t = new HashMap<>();
+                t.put("profile", profileService.selectByUserId(i.getFromId()));
+                t.put("comp", i);
+                res.add(t);
+            }
+            return jsonUtil.getJSONString(0, res);
+        } catch (IllegalAccessException | NumberFormatException e) {
+            logger.error(e.getMessage());
         }
-        return jsonUtil.getJSONString(0, res);
+        return jsonUtil.getJSONString(500);
     }
 
     /**

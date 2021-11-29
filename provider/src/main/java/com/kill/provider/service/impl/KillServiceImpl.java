@@ -23,6 +23,9 @@ public class KillServiceImpl implements KillService {
 
     @Override
     public int killPost(Killact killact) {
+        if(killact == null) {
+            throw new NullPointerException("killact can't be null");
+        }
         int id = killDAO.addAct(killact);
         String ActKey = RedisKeyUtil.getActKey(id);
         jedisAdapter.sadd(ActKey, "0");
@@ -36,12 +39,18 @@ public class KillServiceImpl implements KillService {
     }
 
     @Override
-    public Killact selectById(int id) {
+    public Killact selectById(Integer id) {
+        if(id == null) {
+            throw new NullPointerException("id can't be null");
+        }
         return killDAO.selectById(id);
     }
 
     @Override
-    public int joinAct(int actId, int stockId) {
+    public int joinAct(Integer actId, Integer stockId) {
+        if(actId == null || stockId == null) {
+            throw new NullPointerException("id can't be null");
+        }
         String ActKey = RedisKeyUtil.getActKey(actId);
         String productKey = RedisKeyUtil.getREDIS_PRODUCT_ACT(stockId);
         jedisAdapter.sadd(ActKey, String.valueOf(stockId));
@@ -52,14 +61,20 @@ public class KillServiceImpl implements KillService {
     }
 
     @Override
-    public int getStockAct(int stockId) {
+    public int getStockAct(Integer stockId) {
+        if(stockId == null) {
+            throw new NullPointerException("stockId can't be null");
+        }
         String productKey = RedisKeyUtil.getREDIS_PRODUCT_ACT(stockId);
         if (jedisAdapter.get(productKey) == null) return -1;
         return Integer.parseInt(jedisAdapter.get(productKey));
     }
 
     @Override
-    public Set<String> getJoinStock(int actId) {
+    public Set<String> getJoinStock(Integer actId) {
+        if(actId == null) {
+            throw new NullPointerException("actId can't be null");
+        }
         String actKey = RedisKeyUtil.getActKey(actId);
         return jedisAdapter.smembers(actKey);
     }

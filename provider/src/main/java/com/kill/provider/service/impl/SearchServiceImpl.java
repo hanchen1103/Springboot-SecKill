@@ -18,11 +18,17 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<Stock> searchStock(String q) {
+        if(q == null) {
+            throw new NullPointerException("param can't be null");
+        }
         return searchDAO.searchStock(q);
     }
 
     @Override
     public List<Profile> selectProfile(String q) {
+        if(q == null) {
+            throw new NullPointerException("param can't be null");
+        }
         return searchDAO.selectProfile(q);
     }
 

@@ -11,12 +11,12 @@ public interface KillService {
 
     List<Killact> getAllKillAct();
 
-    Killact selectById(int id);
+    Killact selectById(Integer id);
 
-    int joinAct(int actId, int stockId);
+    int joinAct(Integer actId, Integer stockId);
 
-    int getStockAct(int stockId);
+    int getStockAct(Integer stockId);
 
-    Set<String> getJoinStock(int actId);
+    Set<String> getJoinStock(Integer actId);
 
 }

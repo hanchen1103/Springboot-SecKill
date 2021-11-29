@@ -8,5 +8,5 @@ public interface UserService {
 
     User selectById(int id);
 
-    void updateHead_url(String head_url, int id);
+    void updateHead_url(String head_url, int id) throws IllegalAccessException;
 }

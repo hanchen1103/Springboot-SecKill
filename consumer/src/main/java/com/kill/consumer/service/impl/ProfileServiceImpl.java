@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@org.springframework.stereotype.Service
 public class ProfileServiceImpl implements ProfileSer {
 
     @Reference
@@ -21,12 +22,12 @@ public class ProfileServiceImpl implements ProfileSer {
     }
 
     @Override
-    public Profile selectByUserId(int userId) {
+    public Profile selectByUserId(Integer userId) {
         return profileService.selectByUserId(userId);
     }
 
     @Override
-    public List<Profile> selectAll(int start, int end) {
+    public List<Profile> selectAll(Integer start, Integer end) throws IllegalAccessException {
         return profileService.selectAll(start, end);
     }
 
@@ -36,7 +37,7 @@ public class ProfileServiceImpl implements ProfileSer {
     }
 
     @Override
-    public void updateHead_url(String head_url, int userId) {
+    public void updateHead_url(String head_url, Integer userId) throws IllegalAccessException {
         profileService.updateHead_url(head_url, userId);
     }
 
@@ -46,12 +47,12 @@ public class ProfileServiceImpl implements ProfileSer {
     }
 
     @Override
-    public void updateStatus(int userId) {
+    public void updateStatus(Integer userId) {
         profileService.updateStatus(userId);
     }
 
     @Override
-    public void cancelStatus(int userId) {
+    public void cancelStatus(Integer userId) {
         profileService.cancelStatus(userId);
     }
 }

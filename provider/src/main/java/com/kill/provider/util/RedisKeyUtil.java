@@ -76,6 +76,4 @@ public class RedisKeyUtil {
         return REDIS_POWER + REDIS_SPLIT + REDIS_SEASON + REDIS_SPLIT + uid;
     }
 
-
-
 }

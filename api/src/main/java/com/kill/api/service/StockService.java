@@ -11,14 +11,14 @@ public interface StockService {
      * @param id 库存id
      * @return 整数
      */
-    int getStockCount(int id);
+    int getStockCount(Integer id);
 
     /**
      *根据库存id 查询信息
      * @param id 库存id
      * @return stock
      */
-    Stock getStockById(int id);
+    Stock getStockById(Integer id);
 
     /**
      *更新库存信息
@@ -32,7 +32,7 @@ public interface StockService {
      * @param stock 库存
      * @return 库存id
      */
-    int updateStockByOptimisticLock(int addSale, Stock stock);
+    int updateStockByOptimisticLock(Integer addSale, Stock stock);
 
     /**
      * 上传库存商品

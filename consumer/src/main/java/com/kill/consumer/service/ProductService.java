@@ -5,7 +5,7 @@ import com.kill.api.model.spiderProduct;
 import java.util.List;
 
 public interface ProductService {
-    Integer getCost(int a);
+    Integer getCost(Integer a);
 
     List<spiderProduct> getSpider(String name);
 

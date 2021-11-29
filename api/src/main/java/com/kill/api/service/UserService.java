@@ -6,7 +6,7 @@ public interface UserService {
 
     User selectByName(String username);
 
-    User selectById(int id);
+    User selectById(Integer id);
 
-    void updateHead_url(String head_url, int id);
+    void updateHead_url(String head_url, Integer id) throws IllegalAccessException;
 }

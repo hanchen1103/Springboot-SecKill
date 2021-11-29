@@ -36,35 +36,53 @@ public class StockServiceImpl implements StockService {
     @Autowired
     JedisAdapter jedisAdapter;
 
-    public Set<String> getCollectUser(int hotelId) {
+    public Set<String> getCollectUser(Integer hotelId) {
+        if(hotelId == null) {
+            throw new NullPointerException("hotelId can't be null");
+        }
         String LikeKey = RedisKeyUtil.getLikeKey(EntityType.ENTITYTYPE_HOTEL, hotelId);
         return jedisAdapter.smembers(LikeKey);
     }
 
     @Override
-    public int getStockCount(int id) {
+    public int getStockCount(Integer id) {
+        if(id == null) {
+            throw new NullPointerException("id can't be null");
+        }
         Stock stock = stockDAO.selectById(id);
         return stock.getCount();
     }
 
     @Override
-    public Stock getStockById(int id) {
+    public Stock getStockById(Integer id) {
+        if(id == null) {
+            throw new NullPointerException("id can't be null");
+        }
         return stockDAO.selectById(id);
     }
 
 
     @Override
     public int updateStockById(Stock stock) {
+        if(stock == null) {
+            throw new NullPointerException("stock can't be null");
+        }
         return stockDAO.updateStock(stock);
     }
 
     @Override
-    public int updateStockByOptimisticLock(int sale, Stock stock) {
+    public int updateStockByOptimisticLock(Integer sale, Stock stock) {
+        if(stock == null || sale == null) {
+            throw new NullPointerException("stock and sale can't be null");
+        }
         return stockDAO.updateStockByOptimisticLock(sale, stock.getId(), stock.getVersion());
     }
 
     @Override
     public int addStock(Stock stock) {
+        if(stock == null) {
+            throw new NullPointerException("stock can't be null");
+        }
         stockDAO.addStock(stock);
         Set<String> list = getCollectUser(stock.getUserId());
         if (list.size() != 0) {

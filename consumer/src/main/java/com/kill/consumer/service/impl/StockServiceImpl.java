@@ -8,12 +8,12 @@ import com.kill.consumer.service.StockSer;
 
 import java.util.List;
 
-
 @Service
+@org.springframework.stereotype.Service
 public class StockServiceImpl implements StockSer {
 
     @Reference
-    private StockService stockService;
+    StockService stockService;
 
     @Override
     public int getStockCount(int id) {

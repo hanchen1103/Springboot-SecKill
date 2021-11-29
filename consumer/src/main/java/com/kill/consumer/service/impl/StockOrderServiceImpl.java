@@ -16,22 +16,22 @@ public class StockOrderServiceImpl implements StockOrderService {
     private OrderService orderService;
 
     @Override
-    public int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+    public int createOrderUseRedis(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception {
         return orderService.createOrderUseRedis(addSale, stockId, userId, price);
     }
 
     @Override
-    public void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+    public void createOrderUseRedisAndKafka(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception {
         orderService.createOrderUseRedisAndKafka(addSale, stockId, userId, price);
     }
 
     @Override
-    public StockOrder selectOrderById(int orderId) {
+    public StockOrder selectOrderById(Integer orderId) {
         return orderService.selectOrderById(orderId);
     }
 
     @Override
-    public List<StockOrder> selectByUserId(int userId, int start, int end) {
+    public List<StockOrder> selectByUserId(Integer userId, Integer start, Integer end) {
         return orderService.selectByUserId(userId, start, end);
     }
 

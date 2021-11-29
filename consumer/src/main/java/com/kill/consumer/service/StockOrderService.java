@@ -12,7 +12,7 @@ public interface StockOrderService {
      * @param stockId 库存id
      * @throws Exception 异常
      */
-    int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
+    int createOrderUseRedis(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception;
 
     /**
      * 创建订单
@@ -22,10 +22,10 @@ public interface StockOrderService {
      * @param price 价格
      * @throws Exception redis和kafka异常
      */
-    void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception;
+    void createOrderUseRedisAndKafka(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception;
 
-    StockOrder selectOrderById(int orderId);
+    StockOrder selectOrderById(Integer orderId);
 
-    List<StockOrder> selectByUserId(int userId, int start, int end);
+    List<StockOrder> selectByUserId(Integer userId, Integer start, Integer end);
 
 }

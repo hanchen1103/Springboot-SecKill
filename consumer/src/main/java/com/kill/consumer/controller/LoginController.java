@@ -47,21 +47,23 @@ public class LoginController {
                         HttpServletResponse response) {
         String username = jsonMap.get("username");
         String password = jsonMap.get("password");
-        Map<String, Object> map = loginService.Login(username, password);
-        if (map.containsKey("ticket")) {
-            Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
-            cookie.setPath("/");
-            response.addCookie(cookie);
-            Map<String, Object> res = new HashMap<>();
-            User user = userService.selectByName(username);
-            if(user.getStatus() == 1) return jsonUtil.getJSONString(1, "账号异常，暂被冻结");
-            Profile pro = profileService.selectByUserId(user.getId());
-            res.put("user", user);
-            res.put("pro", pro);
-            return jsonUtil.getJSONString(0, res);
-        } else {
-            return jsonUtil.getJSONString(1, map.get("msg"));
+        try {
+            Map<String, Object> map = loginService.Login(username, password);
+            if (map.containsKey("ticket")) {
+                Cookie cookie = new Cookie("ticket", map.get("ticket").toString());
+                cookie.setPath("/");
+                response.addCookie(cookie);
+                Map<String, Object> res = new HashMap<>();
+                User user = userService.selectByName(username);
+                Profile pro = profileService.selectByUserId(user.getId());
+                res.put("user", user);
+                res.put("pro", pro);
+                return jsonUtil.getJSONString(0, res);
+            }
+        } catch (IllegalAccessException | NumberFormatException e) {
+            logger.error(e.getMessage());
         }
+        return jsonUtil.getJSONString(500);
     }
 
     /**

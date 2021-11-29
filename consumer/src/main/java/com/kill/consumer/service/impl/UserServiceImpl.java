@@ -6,6 +6,7 @@ import com.kill.api.model.User;
 import com.kill.consumer.service.UserService;
 
 @Service
+@org.springframework.stereotype.Service
 public class UserServiceImpl implements UserService {
 
     @Reference
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateHead_url(String head_url, int id) {
+    public void updateHead_url(String head_url, int id) throws IllegalAccessException {
         userService.updateHead_url(head_url, id);
     }
 }

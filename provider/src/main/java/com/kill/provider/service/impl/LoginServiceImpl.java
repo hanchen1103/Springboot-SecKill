@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.*;
 
 @Service
+@org.springframework.stereotype.Service
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -23,41 +24,26 @@ public class LoginServiceImpl implements LoginService {
     LoginTicketDAO loginticketdao;
 
 
-    public void updateHead_url(String head_url, int id) {
-        userdao.updateHead_url(head_url, id);
-    }
-
-
-    public void upddateLevel(int level, int id) {
-        userdao.updateLevel(level, id);
-    }
-
-
-
     @Override
-    public Map<String, Object> register(String username, String password) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        if(username.isEmpty()) {
-            map.put("msg", "用户名不能为空");
-            return map;
+    public Map<String, Object> register(String username, String password) throws IllegalAccessException {
+        Map<String, Object> map = new HashMap<>();
+        if(username == null || username.isEmpty()) {
+            throw new NullPointerException("username can't be empty");
         }
 
-        if(password.isEmpty()) {
-            map.put("msg", "密码不能为空");
-            return map;
+        if(password == null || password.isEmpty()) {
+            throw new NullPointerException("password can't be empty");
         }
 
         User user = userdao.selectByName(username);
         if(user != null) {
-            map.put("msg", "用户名已被注册");
-            return map;
+            throw new IllegalAccessException("User has been registered");
         }
 
-        Random random = new Random();
         user = new User();
         user.setName(username);
         user.setSalt(UUID.randomUUID().toString().substring(0, 5));
-        String head = String.format("http://zhchaoshuai.%dt.png", random.nextInt(1000));
+        String head = "null";
         user.setHead_url(head);
         user.setPassword(newProjectUtil.MD5(password + user.getSalt()));
         userdao.addUser(user);
@@ -68,27 +54,23 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public Map<String, Object> Login(String username, String password) {
+    public Map<String, Object> Login(String username, String password) throws IllegalAccessException {
         Map<String, Object> map = new HashMap<String, Object>();
-        if(username.isEmpty()) {
-            map.put("msg", "用户名输入不可为空");
-            return map;
+        if(username == null || username.isEmpty()) {
+            throw new NullPointerException("username can't be empty");
         }
 
-        if(password.isEmpty()) {
-            map.put("msg", "密码输入不可为空");
-            return map;
+        if(password == null || password.isEmpty()) {
+            throw new NullPointerException("password can't be empty");
         }
 
         User user = userdao.selectByName(username);
         if(user == null) {
-            map.put("msg", "用户不存在！");
-            return map;
+            throw new IllegalAccessException("User does not exist");
         }
 
-        if(!newProjectUtil.MD5(password + user.getSalt()).equals(user.getPassword())) {
-            map.put("msg", "密码不正确！");
-            return map;
+        if(!Objects.equals(newProjectUtil.MD5(password + user.getSalt()), user.getPassword())) {
+            throw new IllegalAccessException("Incorrect password");
         }
 
         String ticket = addLoginTicket(user.getId());
@@ -111,15 +93,10 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public void layout(String ticket) {
+        if(ticket == null) {
+            throw new NullPointerException("ticket can't be null");
+        }
         loginticketdao.updateStatus(ticket, 1);
-    }
-
-    public void updateUser(int id) {
-        userdao.updateUser(id);
-    }
-
-    public void cancelUser(int id) {
-        userdao.cancel(id);
     }
 
 }

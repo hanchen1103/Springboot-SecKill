@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.kill.api.model.spiderProduct;
 import com.kill.api.service.CostService;
 import com.kill.consumer.service.ProductService;
+import scala.Int;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ProductServiceImpl implements ProductService {
     private CostService costService;
 
     @Override
-    public Integer getCost(int a) {
+    public Integer getCost(Integer a) {
         return costService.add(a);
     }
 

@@ -8,22 +8,22 @@ public interface MessageService {
 
     int addMessage(Message message);
 
-    List<Message> getMessageById(String messageId, int offset, int limit);
+    List<Message> getMessageById(String messageId, Integer offset, Integer limit) throws IllegalAccessException;
 
-    List<Message> getMessageList(int userId, int offset, int limit);
+    List<Message> getMessageList(Integer userId, Integer offset, Integer limit) throws IllegalAccessException;
 
-    int hasReadCount(int userId, String messageId);
+    int hasReadCount(Integer userId, String messageId);
 
-    int isRead(int toId, int fromId);
+    int isRead(Integer toId, Integer fromId) throws IllegalAccessException;
 
-    Message selectLatest(int toId, int fromId);
+    Message selectLatest(Integer toId, Integer fromId);
 
     Message selectByMessageId(String messageId);
 
-    List<Message> readComplaint(int start, int end);
+    List<Message> readComplaint(Integer start, Integer end) throws IllegalAccessException;
 
-    Message selectById(int id);
+    Message selectById(Integer id);
 
-    int updateRead(int id);
+    int updateRead(Integer id);
 
 }

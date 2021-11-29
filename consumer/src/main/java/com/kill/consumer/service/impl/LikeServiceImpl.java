@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.kill.consumer.service.LikeService;
 
 @Service
+@org.springframework.stereotype.Service
 public class LikeServiceImpl implements LikeService {
 
     @Reference

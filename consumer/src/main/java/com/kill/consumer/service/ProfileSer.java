@@ -9,19 +9,19 @@ public interface ProfileSer {
 
     void addProfile(Profile profile);
 
-    Profile selectByUserId(int userId);
+    Profile selectByUserId(Integer userId);
 
-    List<Profile> selectAll(int start, int end);
+    List<Profile> selectAll(Integer start, Integer end) throws IllegalAccessException;
 
     void updateProfile(String bio, String sex, String name, String nickName, String location,
                        Date birthDay, String telNum, String cardID, String job, int userId);
 
-    void updateHead_url(String head_url, int userId);
+    void updateHead_url(String head_url, Integer userId) throws IllegalAccessException;
 
     int count();
 
-    void updateStatus(int userId);
+    void updateStatus(Integer userId);
 
 
-    void cancelStatus(int userId);
+    void cancelStatus(Integer userId);
 }

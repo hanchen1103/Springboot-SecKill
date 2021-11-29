@@ -41,7 +41,10 @@ public class StockOrderServiceImpl implements OrderService {
     @Autowired
     KafkaProducer kafkaProducer;
 
-    private int createOrder(Stock stock, int userId, BigDecimal price){
+    private int createOrder(Stock stock, Integer userId, BigDecimal price){
+        if(stock == null || userId == null || price == null) {
+            throw new NullPointerException();
+        }
         StockOrder stockOrder = new StockOrder();
         stockOrder.setStockId(stock.getId());
         stockOrder.setUserId(userId);
@@ -56,25 +59,31 @@ public class StockOrderServiceImpl implements OrderService {
      * 乐观锁更新数据库和redis
      * @param stock 库存信息
      */
-    public Map<Integer, String> saleStockByOptimistic(int addSale, Stock stock) {
-        Map<Integer, String> map = new HashMap<>();
+    public void saleStockByOptimistic(Integer addSale, Stock stock) throws IllegalAccessException {
+        if(stock == null || addSale == null || addSale <= 0) {
+            throw new IllegalAccessException("stock exception");
+        }
         if(addSale + stock.getSale() > stock.getCount()) {
-            map.put(999, "库存不足");
-            return map;
-            //throw new RuntimeException("库存不足");
+            throw new RuntimeException("Inventory shortage!");
         }
         int flag = stockService.updateStockByOptimisticLock(addSale, stock);
         if(flag == 0) {
-            map.put(999, "更新库存失败");
-            //throw new RuntimeException("更新库存失败");
-            return map;
+            throw new RuntimeException("Failed to update inventory!");
         }
         redis.opsForValue().increment(RedisKeyUtil.STOCK_SALE + stock.getId(), addSale);
         redis.opsForValue().increment(RedisKeyUtil.STOCK_VERSION + stock.getId(), 1);
-        return null;
     }
 
-    private Stock checkStockByRedis(int sid) {
+
+    /**
+     * 更新缓存
+     * @param sid 商品id
+     * @return stock
+     */
+    private Stock checkStockByRedis(Integer sid) {
+        if(sid == null) {
+            throw new NullPointerException("sid can't be null");
+        }
         if(redis.opsForValue().get(RedisKeyUtil.STOCK_COUNT + sid) == null ||
                 redis.opsForValue().get(RedisKeyUtil.STOCK_SALE + sid) == null
         || redis.opsForValue().get(RedisKeyUtil.STOCK_VERSION + sid) == null) {
@@ -98,15 +107,20 @@ public class StockOrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int createOrderUseRedis(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+    public int createOrderUseRedis(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception {
+        if(addSale == null || stockId == null || userId == null || price == null) {
+            throw new NullPointerException();
+        }
         Stock stock = checkStockByRedis(stockId);
-        Map<Integer, String> map = saleStockByOptimistic(addSale, stock);
-        if (map != null) return -1;
+        saleStockByOptimistic(addSale, stock);
         return createOrder(stock, userId, price);
     }
 
     @Override
-    public void createOrderUseRedisAndKafka(int addSale, int stockId, int userId, BigDecimal price) throws Exception {
+    public void createOrderUseRedisAndKafka(Integer addSale, Integer stockId, Integer userId, BigDecimal price) throws Exception {
+        if(addSale == null || stockId == null || userId == null || price == null) {
+            throw new NullPointerException();
+        }
         Stock stock = checkStockByRedis(stockId);
         stock.setPrice(price);
         stock.setUserId(userId);
@@ -116,12 +130,21 @@ public class StockOrderServiceImpl implements OrderService {
     }
 
     @Override
-    public StockOrder selectOrderById(int orderId) {
+    public StockOrder selectOrderById(Integer orderId) {
+        if(orderId == null) {
+            throw new NullPointerException("orderId can't be null");
+        }
         return stockOrderDAO.selectById(orderId);
     }
 
     @Override
-    public List<StockOrder> selectByUserId(int userId, int start, int end) {
+    public List<StockOrder> selectByUserId(Integer userId, Integer start, Integer end) {
+        if(userId == null || start == null || end == null) {
+            throw new NullPointerException("param can't be null");
+        }
+        if(start < 0 || end < 0) {
+            throw new NullPointerException("param exception");
+        }
         return stockOrderDAO.selectOrderUserId(userId, start, end);
     }
 

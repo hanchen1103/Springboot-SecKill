@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@org.springframework.stereotype.Service
 public class AnaServiceImpl implements AnaService {
 
     @Reference

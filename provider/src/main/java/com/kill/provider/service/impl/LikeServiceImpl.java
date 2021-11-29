@@ -13,6 +13,7 @@ import com.kill.provider.mapper.StockDAO;
 import com.kill.provider.util.JedisAdapter;
 import com.kill.provider.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -37,18 +38,27 @@ public class LikeServiceImpl implements LikeService {
     @Autowired
     KafkaProducer kafkaProducer;
 
+    @Value("${systemId}")
+    Integer systemId;
+
     @Override
-    public Long getLikeCount(int entityType, int entityId) {
+    public Long getLikeCount(Integer entityType, Integer entityId) {
+        if(entityId == null || entityType == null) {
+            throw new NullPointerException();
+        }
         String LikeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         return jedisAdapter.scard(LikeKey);
     }
 
     @Override
-    public Long like(int userId, int entityType, int entityId) {
+    public Long like(Integer userId, Integer entityType, Integer entityId) {
+        if(userId == null || entityId == null || entityType == null) {
+            throw new NullPointerException();
+        }
         String LikeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         jedisAdapter.sadd(LikeKey, String.valueOf(userId));
         Message mes = new Message();
-        mes.setFromId(9999099);
+        mes.setFromId(systemId);
         mes.setCreateDate(new Date());
         Profile profile = profileDAO.selectByUserId(userId);
         if(entityType == 1) {
@@ -76,14 +86,20 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public Long disLike(int userId, int entityType, int entityId) {
+    public Long disLike(Integer userId, Integer entityType, Integer entityId) {
+        if(userId == null || entityId == null || entityType == null) {
+            throw new NullPointerException();
+        }
         String LikeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         jedisAdapter.srem(LikeKey, String.valueOf(userId));
         return jedisAdapter.scard(LikeKey);
     }
 
     @Override
-    public int getLikeStatus(int userId, int entityType, int entityId) {
+    public int getLikeStatus(Integer userId, Integer entityType, Integer entityId) {
+        if(userId == null || entityId == null || entityType == null) {
+            throw new NullPointerException();
+        }
         String LikeKey = RedisKeyUtil.getLikeKey(entityType, entityId);
         if(jedisAdapter.sismember(LikeKey, String.valueOf(userId)))
             return 1;

@@ -8,6 +8,7 @@ import com.kill.consumer.service.MessageService;
 import java.util.List;
 
 @Service
+@org.springframework.stereotype.Service
 public class MessageServiceImpl implements MessageService {
 
     @Reference
@@ -20,27 +21,27 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> getMessageById(String messageId, int offset, int limit) {
+    public List<Message> getMessageById(String messageId, Integer offset, Integer limit) throws IllegalAccessException {
         return messageService.getMessageById(messageId, offset, limit);
     }
 
     @Override
-    public List<Message> getMessageList(int userId, int offset, int limit) {
+    public List<Message> getMessageList(Integer userId, Integer offset, Integer limit) throws IllegalAccessException {
         return messageService.getMessageList(userId, offset, limit);
     }
 
     @Override
-    public int hasReadCount(int userId, String messageId) {
+    public int hasReadCount(Integer userId, String messageId) {
         return messageService.hasReadCount(userId, messageId);
     }
 
     @Override
-    public int isRead(int toId, int fromId) {
+    public int isRead(Integer toId, Integer fromId) throws IllegalAccessException {
         return messageService.isRead(toId, fromId);
     }
 
     @Override
-    public Message selectLatest(int toId, int fromId) {
+    public Message selectLatest(Integer toId, Integer fromId) {
         return messageService.selectLatest(toId, fromId);
     }
 
@@ -50,17 +51,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public List<Message> readComplaint(int start, int end) {
+    public List<Message> readComplaint(Integer start, Integer end) throws IllegalAccessException {
         return messageService.readComplaint(start, end);
     }
 
     @Override
-    public Message selectById(int id) {
+    public Message selectById(Integer id) {
         return messageService.selectById(id);
     }
 
     @Override
-    public int updateRead(int id) {
+    public int updateRead(Integer id) {
         return messageService.updateRead(id);
     }
 }

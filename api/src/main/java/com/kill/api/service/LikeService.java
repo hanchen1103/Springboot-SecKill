@@ -1,12 +1,13 @@
 package com.kill.api.service;
 
 public interface LikeService {
-    Long getLikeCount(int entityType, int entityId);
 
-    Long like(int userId, int entityType, int entityId);
+    Long getLikeCount(Integer entityType, Integer entityId);
 
-    Long disLike(int userId, int entityType, int entityId);
+    Long like(Integer userId, Integer entityType, Integer entityId);
 
-    int getLikeStatus(int userId, int entityType, int entityId);
+    Long disLike(Integer userId, Integer entityType, Integer entityId);
+
+    int getLikeStatus(Integer userId, Integer entityType, Integer entityId);
 
 }
